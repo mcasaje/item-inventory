@@ -1,10 +1,10 @@
 package models.appusers;
 
 import models.jpa.JPAUtils;
-import play.db.jpa.JPA;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 class AppUserRepositoryImpl implements AppUserRepository {
 
@@ -34,6 +34,29 @@ class AppUserRepositoryImpl implements AppUserRepository {
             entityManager.close();
         }
 
+    }
+
+    @Override
+    public AppUser find(String username) {
+
+        EntityManager entityManager = jpaUtils.createEntityManager();
+
+        try {
+
+            entityManager.getTransaction().begin();
+
+            final String queryString = "SELECT o FROM AppUserDAO o WHERE o.username=:USERNAME";
+            TypedQuery<AppUserDAO> query = entityManager.createQuery(queryString, AppUserDAO.class);
+            query.setParameter("USERNAME", username);
+            AppUserDAO appUserDAO = query.getSingleResult();
+
+            entityManager.getTransaction().commit();
+
+            return appUserFactory.create(appUserDAO);
+
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override

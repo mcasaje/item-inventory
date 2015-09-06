@@ -9,4 +9,6 @@ public interface AuthSecurityUtils {
 
     String encryptPassword(String salt, String plainPassword);
 
+    boolean comparePassword(String salt, String plainPassword, String passwordHash);
+
 }

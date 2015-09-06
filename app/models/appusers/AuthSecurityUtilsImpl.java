@@ -18,6 +18,14 @@ class AuthSecurityUtilsImpl implements AuthSecurityUtils {
     public String encryptPassword(String salt, String plainPassword) {
         final String saltedPassword = salt + plainPassword;
         StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
-        return encryptor.encryptPassword(saltedPassword);
+        String encryptPassword = encryptor.encryptPassword(saltedPassword);
+        return encryptPassword;
+    }
+
+    @Override
+    public boolean comparePassword(String salt, String plainPassword, String passwordHash) {
+        final String saltedPassword = salt + plainPassword;
+        StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
+        return encryptor.checkPassword(saltedPassword, passwordHash);
     }
 }

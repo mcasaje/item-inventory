@@ -13,5 +13,8 @@ GET         /assets/*file        controllers.Assets.at(path="/public", file)
 
 GET         /users/new           @pages.appusers.SignUpPage.get()
 POST        /users/new           @pages.appusers.SignUpPage.post()
-#GET        /users/login
+
+GET         /users/login        @pages.appusers.LoginPage.get()
+POST        /users/login        @pages.appusers.LoginPage.post()
+
 #GET        /users/logout
