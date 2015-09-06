@@ -1,17 +1,18 @@
 package models.items;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface ItemRepository extends TagRepository, FieldRepository {
+public interface ItemRepository {
 
-    Item findItem(int id);
+    Item findItem(EntityManager entityManager, int id);
 
-    Item findItem(String name, String usernameOfOwner);
+    Item findItem(EntityManager entityManager, String name, String usernameOfOwner);
 
-    List<Item> findItems(String usernameOfOwner);
+    List<Item> findItems(EntityManager entityManager, String usernameOfOwner);
 
-    Item insertItem(Item item);
+    Item insertItem(EntityManager entityManager, Item item);
 
-    void deleteItem(Item item);
+    void deleteItem(EntityManager entityManager, Item item);
 
 }

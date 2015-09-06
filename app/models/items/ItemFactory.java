@@ -1,18 +1,17 @@
 package models.items;
 
+import models.items.itemfields.ItemField;
+import models.items.tags.Tag;
+
 import java.util.List;
 import java.util.Set;
 
-public interface ItemFactory extends TagFactory, FieldFactory {
+public interface ItemFactory {
 
     Item createItem(int id, String itemName, String username);
 
-    Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> fields, List<Rating> ratings);
+    Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> fields);
 
     Item createItem(Item item);
-
-    Rating createRating(int id, String ratingKey, int ratingValue);
-
-    Rating createRating(Rating rating);
 
 }

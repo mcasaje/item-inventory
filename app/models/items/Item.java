@@ -1,5 +1,8 @@
 package models.items;
 
+import models.items.itemfields.ItemField;
+import models.items.tags.Tag;
+
 import java.util.List;
 import java.util.Set;
 
@@ -9,7 +12,7 @@ import java.util.Set;
  * The {@link #getId()} is used to compare two {@link Item}
  * objects which will allow arrays of {@link Item} objects to be sorted by their order of creation.
  */
-public interface Item extends Comparable<Item> {
+public interface Item {
 
     int getId();
 
@@ -21,18 +24,12 @@ public interface Item extends Comparable<Item> {
 
     List<ItemField> getItemFields();
 
-    List<Rating> getRatings();
-
     int countTags();
 
-    int countFields();
-
-    int countRatings();
+    int countItemFields();
 
     boolean hasTags();
 
-    boolean hasFields();
-
-    boolean hasRatings();
+    boolean hasItemFields();
 
 }
