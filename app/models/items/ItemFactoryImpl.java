@@ -12,10 +12,12 @@ import java.util.Set;
 class ItemFactoryImpl implements ItemFactory {
 
     private TagFactory tagFactory;
+    private FieldFactory fieldFactory;
 
     @Inject
-    ItemFactoryImpl(TagFactory tagFactory) {
+    ItemFactoryImpl(TagFactory tagFactory, FieldFactory fieldFactory) {
         this.tagFactory = tagFactory;
+        this.fieldFactory = fieldFactory;
     }
 
     @Override
@@ -24,8 +26,8 @@ class ItemFactoryImpl implements ItemFactory {
     }
 
     @Override
-    public Item createItem(int id, String itemName, String username, Set<Tag> tags, List<Field> fields, List<Rating> ratings) {
-        return new ItemImpl(id, itemName, username, tags, fields, ratings);
+    public Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> itemFields, List<Rating> ratings) {
+        return new ItemImpl(id, itemName, username, tags, itemFields, ratings);
     }
 
     @Override
@@ -35,7 +37,7 @@ class ItemFactoryImpl implements ItemFactory {
         String name = item.getName();
         String username = item.getUsername();
         Set<Tag> tags = item.getTags();
-        List<Field> fields = item.getFields();
+        List<ItemField> fields = item.getItemFields();
         List<Rating> ratings = item.getRatings();
 
         return this.createItem(id, name, username, tags, fields, ratings);
@@ -53,12 +55,22 @@ class ItemFactoryImpl implements ItemFactory {
 
     @Override
     public Field createField(int id, String fieldKey, String fieldValue) {
-        return null;
+        return fieldFactory.createField(id, fieldKey, fieldKey);
     }
 
     @Override
     public Field createField(Field field) {
-        return null;
+        return fieldFactory.createField(field);
+    }
+
+    @Override
+    public ItemField createItemField(int id, int itemId, int fieldId, String usernameOfOwner, String fieldValue) {
+        return fieldFactory.createItemField(id, itemId, fieldId, usernameOfOwner, fieldValue);
+    }
+
+    @Override
+    public ItemField createItemField(ItemField itemField) {
+        return fieldFactory.createItemField(itemField);
     }
 
     @Override

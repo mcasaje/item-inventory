@@ -14,15 +14,15 @@ class ItemImpl implements Item {
     private final String name;
     private String username;
     private final Set<Tag> tags;
-    private final List<Field> fields;
+    private final List<ItemField> itemFields;
     private final List<Rating> ratings;
 
-    ItemImpl(int id, String name, String username, Set<Tag> tags, List<Field> fields, List<Rating> ratings) {
+    ItemImpl(int id, String name, String username, Set<Tag> tags, List<ItemField> itemFields, List<Rating> ratings) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.tags = tags;
-        this.fields = fields;
+        this.itemFields = itemFields;
         this.ratings = ratings;
     }
 
@@ -47,8 +47,8 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public List<Field> getFields() {
-        return new ArrayList<>(fields);
+    public List<ItemField> getItemFields() {
+        return new ArrayList<>(itemFields);
     }
 
     @Override
@@ -63,7 +63,7 @@ class ItemImpl implements Item {
 
     @Override
     public int countFields() {
-        return fields == null ? 0 : fields.size();
+        return itemFields == null ? 0 : itemFields.size();
     }
 
     @Override
@@ -78,7 +78,7 @@ class ItemImpl implements Item {
 
     @Override
     public boolean hasFields() {
-        return fields != null && fields.size() > 0;
+        return itemFields != null && itemFields.size() > 0;
     }
 
     @Override

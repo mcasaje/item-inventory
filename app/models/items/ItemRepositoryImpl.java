@@ -2,6 +2,7 @@ package models.items;
 
 import models.jpa.JPAUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ class ItemRepositoryImpl implements ItemRepository {
     private final JPAUtils jpaUtils;
     private final ItemFactory itemFactory;
     private TagRepositoryImpl tagRepository;
+    private FieldRepositoryImpl fieldRepository;
 
-    ItemRepositoryImpl(JPAUtils jpaUtils, ItemFactory itemFactory, TagRepositoryImpl tagRepository) {
+    @Inject
+    ItemRepositoryImpl(JPAUtils jpaUtils, ItemFactory itemFactory, TagFactory tagFactory, FieldFactory fieldFactory) {
         this.jpaUtils = jpaUtils;
         this.itemFactory = itemFactory;
-        this.tagRepository = tagRepository;
+        this.tagRepository = new TagRepositoryImpl(jpaUtils, tagFactory);
+        this.fieldRepository = new FieldRepositoryImpl(jpaUtils, fieldFactory);
     }
 
     public Item findItem(int id) {
@@ -42,12 +46,12 @@ class ItemRepositoryImpl implements ItemRepository {
             String usernameOfOwner = dao.getUsernameOfOwner();
 
             Set<Tag> tags = this.queryForTags(entityManager, id);
-            List<Field> fields = this.queryForFields(entityManager, id);
+            List<ItemField> itemFields = this.queryForItemFields(entityManager, id);
             List<Rating> ratings = this.queryForRating(entityManager, id);
 
             entityManager.getTransaction().commit();
 
-            return itemFactory.createItem(id, name, usernameOfOwner, tags, fields, ratings);
+            return itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields, ratings);
 
         } finally {
             entityManager.close();
@@ -74,12 +78,12 @@ class ItemRepositoryImpl implements ItemRepository {
             assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
             Set<Tag> tags = this.queryForTags(entityManager, id);
-            List<Field> fields = this.queryForFields(entityManager, id);
+            List<ItemField> itemFields = this.queryForItemFields(entityManager, id);
             List<Rating> ratings = this.queryForRating(entityManager, id);
 
             entityManager.getTransaction().commit();
 
-            return itemFactory.createItem(id, name, usernameOfOwner, tags, fields, ratings);
+            return itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields, ratings);
 
         } finally {
             entityManager.close();
@@ -108,9 +112,9 @@ class ItemRepositoryImpl implements ItemRepository {
                 assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
                 Set<Tag> tags = this.queryForTags(entityManager, id);
-                List<Field> fields = this.queryForFields(entityManager, id);
+                List<ItemField> itemFields = this.queryForItemFields(entityManager, id);
                 List<Rating> ratings = this.queryForRating(entityManager, id);
-                Item item = itemFactory.createItem(id, name, usernameOfOwner, tags, fields, ratings);
+                Item item = itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields, ratings);
                 items.add(item);
             }
 
@@ -159,6 +163,7 @@ class ItemRepositoryImpl implements ItemRepository {
         try {
 
             entityManager.getTransaction().begin();
+            entityManager.merge(dao);
             entityManager.remove(dao);
             entityManager.getTransaction().commit();
 
@@ -192,15 +197,59 @@ class ItemRepositoryImpl implements ItemRepository {
         tagRepository.deleteTag(tag);
     }
 
+    @Override
+    public Field findField(int id) {
+        return fieldRepository.findField(id);
+    }
+
+    @Override
+    public Field findField(String name, String usernameOfOwner) {
+        return fieldRepository.findField(name, usernameOfOwner);
+    }
+
+    @Override
+    public List<Field> findFields(String usernameOfOwner) {
+        return fieldRepository.findFields(usernameOfOwner);
+    }
+
+    @Override
+    public Field insertField(Field field) {
+        return fieldRepository.insertField(field);
+    }
+
+    @Override
+    public void deleteField(Field field) {
+        fieldRepository.deleteField(field);
+    }
+
+    @Override
+    public ItemField findItemField(int id) {
+        return fieldRepository.findItemField(id);
+    }
+
+    @Override
+    public List<ItemField> findItemFields(int itemId) {
+        return fieldRepository.findItemFields(itemId);
+    }
+
+    @Override
+    public ItemField insertItemField(ItemField field) {
+        return fieldRepository.insertItemField(field);
+    }
+
+    @Override
+    public void deleteItemField(ItemField field) {
+        fieldRepository.deleteItemField(field);
+    }
+
     // Package-private Methods - These utilize an EntityManager with an already-started transaction //
 
     Set<Tag> queryForTags(EntityManager entityManager, int itemId) {
         return tagRepository.findTags(entityManager, itemId);
     }
 
-    List<Field> queryForFields(EntityManager entityManager, int itemId) {
-        // TODO: Delegate to FieldRepository
-        return null;
+    List<ItemField> queryForItemFields(EntityManager entityManager, int itemId) {
+        return fieldRepository.findItemFields(entityManager, itemId);
     }
 
     List<Rating> queryForRating(EntityManager entityManager, int itemId) {
@@ -221,5 +270,4 @@ class ItemRepositoryImpl implements ItemRepository {
 
         return dao;
     }
-
 }

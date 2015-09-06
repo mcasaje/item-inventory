@@ -19,7 +19,7 @@ public interface Item extends Comparable<Item> {
 
     Set<Tag> getTags();
 
-    List<Field> getFields();
+    List<ItemField> getItemFields();
 
     List<Rating> getRatings();
 

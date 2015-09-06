@@ -2,7 +2,7 @@ package models.items;
 
 import java.util.List;
 
-public interface ItemRepository extends TagRepository {
+public interface ItemRepository extends TagRepository, FieldRepository {
 
     Item findItem(int id);
 

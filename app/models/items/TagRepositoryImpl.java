@@ -2,6 +2,7 @@ package models.items;
 
 import models.jpa.JPAUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -14,6 +15,7 @@ class TagRepositoryImpl implements TagRepository {
     private JPAUtils jpaUtils;
     private TagFactory tagFactory;
 
+    @Inject
     TagRepositoryImpl(JPAUtils jpaUtils, TagFactory tagFactory) {
         this.jpaUtils = jpaUtils;
         this.tagFactory = tagFactory;

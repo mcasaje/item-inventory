@@ -9,6 +9,7 @@ CREATE TABLE app_user (
   UNIQUE INDEX uq_app_users_username(username)
 );
 
+-- Item --
 
 CREATE TABLE item (
   id       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -20,6 +21,7 @@ CREATE TABLE item (
   CONSTRAINT fk_item_owner FOREIGN KEY (username) REFERENCES app_user (username)
 );
 
+-- Tag --
 
 CREATE TABLE tag (
   id       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -30,9 +32,6 @@ CREATE TABLE tag (
   INDEX fk_tag_owner (username),
   CONSTRAINT fk_tag_owner FOREIGN KEY (username) REFERENCES app_user (username)
 );
-
-
-/* Association Tables */
 
 CREATE TABLE item_tag (
   id       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -47,4 +46,32 @@ CREATE TABLE item_tag (
   CONSTRAINT fk_item_tag_tag FOREIGN KEY (tag_id) REFERENCES tag (id),
   INDEX fk_item_tag_owner (username),
   CONSTRAINT fk_item_tag_owner FOREIGN KEY (username) REFERENCES app_user (username)
+);
+
+-- Field --
+
+CREATE TABLE field (
+  id       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name     VARCHAR(100)     NOT NULL,
+  username VARCHAR(100)     NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX uq_field_name_per_user (name, username),
+  INDEX fk_field_owner (username),
+  CONSTRAINT fk_field_owner FOREIGN KEY (username) REFERENCES app_user (username)
+);
+
+CREATE TABLE item_field (
+  id        INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  item_id   INT(11) UNSIGNED NOT NULL,
+  field_id  INT(11) UNSIGNED NOT NULL,
+  username  VARCHAR(100)     NOT NULL,
+  field_val VARCHAR(100)     NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX uq_item_field_per_user (item_id, field_id, username),
+  INDEX fk_item_field_item (item_id),
+  CONSTRAINT fk_item_field_item FOREIGN KEY (item_id) REFERENCES item (id),
+  INDEX fk_item_field_field (field_id),
+  CONSTRAINT fk_item_field_field FOREIGN KEY (field_id) REFERENCES field (id),
+  INDEX fk_item_field_owner (username),
+  CONSTRAINT fk_item_field_owner FOREIGN KEY (username) REFERENCES app_user (username)
 );

@@ -7,7 +7,7 @@ public interface ItemFactory extends TagFactory, FieldFactory {
 
     Item createItem(int id, String itemName, String username);
 
-    Item createItem(int id, String itemName, String username, Set<Tag> tags, List<Field> fields, List<Rating> ratings);
+    Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> fields, List<Rating> ratings);
 
     Item createItem(Item item);
 

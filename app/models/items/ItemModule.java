@@ -12,5 +12,11 @@ public class ItemModule extends AbstractModule {
     protected void configure() {
         bind(ItemFactory.class).to(ItemFactoryImpl.class);
         bind(ItemRepository.class).to(ItemRepositoryImpl.class);
+
+        bind(TagFactory.class).to(TagFactoryImpl.class);
+        bind(TagRepository.class).to(TagRepositoryImpl.class);
+
+        bind(FieldFactory.class).to(FieldFactoryImpl.class);
+        bind(FieldRepository.class).to(FieldRepositoryImpl.class);
     }
 }
