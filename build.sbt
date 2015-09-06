@@ -25,8 +25,7 @@ libraryDependencies ++= Seq(
   javaJpa,
   evolutions,
   "org.hibernate" % "hibernate-entitymanager" % "4.3.9.Final",
-  "org.hibernate.javax.persistence" % "hibernate-jpa-2.0-api" % "1.0.1.Final",
-  "javax.persistence" % "persistence-api" % "1.0.2",
+  "org.hibernate.javax.persistence" % "hibernate-jpa-2.1-api" % "1.0.0.Final",
   "mysql" % "mysql-connector-java" % "5.1.18"
 )
 
