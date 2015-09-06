@@ -40,7 +40,7 @@ class SignUpPageImpl extends Controller implements SignUpPage {
 
         try {
             signUpController.handleSignUp(username, password);
-            return redirect("/users/" + username);
+            return redirect(routes.LoginPage.get());
 
         } catch (UsernameRequiredException e) {
             return ok((Content) signup.render(PAGE_TITLE, "Username is required!", USERNAME_ID, PASSWORD_ID));
