@@ -1,4 +1,4 @@
-package controllers;
+package pages;
 
 import play.*;
 import play.mvc.*;

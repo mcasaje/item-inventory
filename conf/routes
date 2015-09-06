@@ -2,10 +2,16 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                           @controllers.Application.index()
+# Home page - Play Test Page
+GET         /                    @pages.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file        controllers.Assets.at(path="/public", file)
 
-    
+
+# App Users
+
+GET         /users/new           @pages.appusers.SignUpPage.get()
+POST        /users/new           @pages.appusers.SignUpPage.post()
+#GET        /users/login
+#GET        /users/logout

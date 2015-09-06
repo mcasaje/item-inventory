@@ -27,5 +27,8 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-entitymanager" % "4.3.9.Final",
   "org.hibernate.javax.persistence" % "hibernate-jpa-2.0-api" % "1.0.1.Final",
   "javax.persistence" % "persistence-api" % "1.0.2",
-  "mysql" % "mysql-connector-java" % "5.1.6"
+  "mysql" % "mysql-connector-java" % "5.1.18"
 )
+
+// Java Simplified Encryption
+libraryDependencies += "org.jasypt" % "jasypt" % "1.9.2"
