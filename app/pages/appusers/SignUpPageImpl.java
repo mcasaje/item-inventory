@@ -1,11 +1,15 @@
 package pages.appusers;
 
+import controllers.appusers.PasswordRequiredException;
 import controllers.appusers.SignUpController;
+import controllers.appusers.UsernameRequiredException;
+import controllers.appusers.UsernameTakenException;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Results;
+import play.twirl.api.Content;
+import views.html.pages.appusers.signup;
 
 import javax.inject.Inject;
 
@@ -24,20 +28,27 @@ class SignUpPageImpl extends Controller implements SignUpPage {
 
     @Override
     public Result get() {
-        return ok(views.html.pages.appusers.signup.index.render(PAGE_TITLE, USERNAME_ID, PASSWORD_ID));
+        return ok((Content) signup.render(PAGE_TITLE, null, USERNAME_ID, PASSWORD_ID));
     }
 
     @Override
     public Result post() {
 
-        // Retrieve form values
-
         DynamicForm form = Form.form().bindFromRequest();
         String username = form.get(USERNAME_ID);
         String password = form.get(PASSWORD_ID);
 
-        signUpController.signUpHandling(username, password);
+        try {
+            signUpController.handleSignUp(username, password);
+            return redirect("/users/" + username);
 
-        return redirect("/users/" + username);
+        } catch (UsernameRequiredException e) {
+            return ok((Content) signup.render(PAGE_TITLE, "Username is required!", USERNAME_ID, PASSWORD_ID));
+        } catch (PasswordRequiredException e) {
+            return ok((Content) signup.render(PAGE_TITLE, "Password is required!", USERNAME_ID, PASSWORD_ID));
+        } catch (UsernameTakenException e) {
+            return ok((Content) signup.render(PAGE_TITLE, "Username already exists!", USERNAME_ID, PASSWORD_ID));
+        }
+
     }
 }

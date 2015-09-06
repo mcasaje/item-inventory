@@ -6,6 +6,7 @@ import models.appusers.AppUserRepository;
 import models.appusers.AuthSecurityUtils;
 
 import javax.inject.Inject;
+import javax.persistence.RollbackException;
 
 class SignUpControllerImpl implements SignUpController {
 
@@ -23,18 +24,35 @@ class SignUpControllerImpl implements SignUpController {
     }
 
     @Override
-    public void signUpHandling(final String username, final String password) {
+    public void handleSignUp(final String dirtyUsername, final String dirtyPassword) throws UsernameTakenException, UsernameRequiredException, PasswordRequiredException {
 
-        String salt = authSecurityUtils.generateSalt(bitLengthForSalt);
-        String encryptPassword = authSecurityUtils.encryptPassword(salt, password);
+        String username;
+        String password;
 
-        AppUser appUser = appUserFactory.create(username, salt, encryptPassword);
-        appUser = appUserRepository.insert(appUser);
+        if (dirtyUsername != null && !dirtyUsername.equals("")) {
+            // TODO: Do more sanitization
+            username = dirtyUsername;
+        } else {
+            throw new UsernameRequiredException();
+        }
 
-        System.out.println(appUser.getId());
-        System.out.println(appUser.getUsername());
-        System.out.println(appUser.getPasswordSalt());
-        System.out.println(appUser.getPasswordHash());
+        if (dirtyPassword != null && !dirtyPassword.equals("")) {
+            // TODO: Do more sanitization
+            password = dirtyPassword;
+        } else {
+            throw new PasswordRequiredException();
+        }
 
+        try {
+
+            String salt = authSecurityUtils.generateSalt(bitLengthForSalt);
+            String encryptPassword = authSecurityUtils.encryptPassword(salt, password);
+
+            AppUser appUser = appUserFactory.create(username, salt, encryptPassword);
+            appUserRepository.insert(appUser);
+
+        } catch (RollbackException e) {
+            throw new UsernameTakenException();
+        }
     }
 }

@@ -11,5 +11,6 @@ import com.google.inject.AbstractModule;
 public class SignUpPageModule extends AbstractModule {
     protected void configure() {
         bind(SignUpPage.class).to(SignUpPageImpl.class).asEagerSingleton();
+        bind(LoginPage.class).to(LoginPageImpl.class).asEagerSingleton();
     }
 }
