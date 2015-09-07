@@ -11,9 +11,9 @@ public interface TagRepository {
 
     Set<Tag> findTags(EntityManager entityManager, String usernameOfOwner);
 
-    Set<Tag> findTags(EntityManager entityManager, int itemId);
+    Set<Tag> findTags(EntityManager entityManager, int itemTypeId);
 
-    Tag insertTag(EntityManager entityManager, Tag tag);
+    Tag insertTag(EntityManager entityManager, String name, int itemTypeId, String username);
 
     void deleteTag(EntityManager entityManager, Tag tag);
 

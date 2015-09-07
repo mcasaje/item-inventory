@@ -11,6 +11,6 @@ import com.google.inject.AbstractModule;
 public class ItemTypePagesModule extends AbstractModule {
     protected void configure() {
         bind(NewItemTypePage.class).to(NewItemTypePageImpl.class);
-        bind(ItemTypeEditPage.class).to(ItemTypeEditPageImpl.class);
+        bind(EditItemTypePage.class).to(EditItemTypePageImpl.class);
     }
 }

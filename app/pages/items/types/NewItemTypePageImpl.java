@@ -53,7 +53,7 @@ class NewItemTypePageImpl extends Controller implements NewItemTypePage {
             ItemType itemType = itemTypesController.createItemType(name, username);
             Integer id = itemType.getId();
 
-            return redirect(pages.items.types.routes.ItemTypeEditPage.get(id));
+            return redirect(pages.items.types.routes.EditItemTypePage.get(id));
 
         } catch (UnauthorizedException e) {
             return redirect(routes.LoginPage.get());

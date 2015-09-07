@@ -3,6 +3,7 @@ package pages.items.types;
 import controllers.appusers.sessions.SessionAuthController;
 import controllers.appusers.sessions.UnauthorizedException;
 import controllers.items.types.ItemTypesController;
+import models.items.types.ItemType;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -11,15 +12,15 @@ import views.html.pages.items.types.editItemType;
 
 import javax.inject.Inject;
 
-class ItemTypeEditPageImpl extends Controller implements ItemTypeEditPage {
+class EditItemTypePageImpl extends Controller implements EditItemTypePage {
 
-    private final String PAGE_TITLE = "Create a New Item Type";
     private final String FIELD_NAME_ID = "field_name";
+    private final String TAG_NAME_ID = "tag_name";
     private final SessionAuthController sessionAuthController;
     private final ItemTypesController itemTypesController;
 
     @Inject
-    ItemTypeEditPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
+    EditItemTypePageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
         this.sessionAuthController = sessionAuthController;
         this.itemTypesController = itemTypesController;
     }
@@ -27,13 +28,21 @@ class ItemTypeEditPageImpl extends Controller implements ItemTypeEditPage {
     @Override
     public Result get(int itemTypeId) {
 
+        final String NEW_FIELD_ROUTE = routes.EditItemTypePage.postField(itemTypeId).url();
+        final String NEW_TAG_ROUTE = routes.EditItemTypePage.postTag(itemTypeId).url();
+
         try {
+
             sessionAuthController.checkAuth(session());
 
             boolean itemTypeExists = itemTypesController.checkItemTypeExists(itemTypeId);
 
             if (itemTypeExists) {
-                return ok(editItemType.render(PAGE_TITLE, null, FIELD_NAME_ID));
+
+                ItemType itemType = itemTypesController.getItemType(itemTypeId);
+                String pageTitle = "Customize Item Type";
+                return ok(editItemType.render(pageTitle, null, itemType, NEW_FIELD_ROUTE, FIELD_NAME_ID, NEW_TAG_ROUTE, TAG_NAME_ID));
+
             } else {
                 return notFound();
             }
@@ -45,7 +54,7 @@ class ItemTypeEditPageImpl extends Controller implements ItemTypeEditPage {
     }
 
     @Override
-    public Result post(int itemTypeId) {
+    public Result postField(int itemTypeId) {
 
         try {
 
@@ -62,7 +71,32 @@ class ItemTypeEditPageImpl extends Controller implements ItemTypeEditPage {
 
             itemTypesController.addFieldToItemType(itemTypeId, username, fieldName);
 
-            return ok(editItemType.render(PAGE_TITLE, null, FIELD_NAME_ID));
+            return redirect(routes.EditItemTypePage.get(itemTypeId));
+
+        } catch (UnauthorizedException e) {
+            return redirect(pages.appusers.routes.LoginPage.get());
+        }
+    }
+
+    @Override
+    public Result postTag(int itemTypeId) {
+
+        try {
+
+            String username = sessionAuthController.getUsername(session());
+
+            boolean itemTypeExists = itemTypesController.checkItemTypeExists(itemTypeId);
+
+            if (!itemTypeExists) {
+                return notFound();
+            }
+
+            DynamicForm form = Form.form().bindFromRequest();
+            String tagName = form.get(TAG_NAME_ID);
+
+            itemTypesController.addTagToItemType(itemTypeId, username, tagName);
+
+            return redirect(routes.EditItemTypePage.get(itemTypeId));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

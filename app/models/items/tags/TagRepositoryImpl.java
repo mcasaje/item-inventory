@@ -2,8 +2,8 @@ package models.items.tags;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -74,16 +74,14 @@ class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Set<Tag> findTags(EntityManager entityManager, int itemId) {
+    public Set<Tag> findTags(EntityManager entityManager, int itemTypeId) {
 
-        final String queryString = "SELECT t.* FROM tag AS t RIGHT JOIN (\n" +
-                "  SELECT * FROM item_tag AS it WHERE it.item_id = :ITEM_ID\n" +
-                ") AS assoc ON assoc.tag_id = t.id AND assoc.username = t.username;";
-        Query query = entityManager.createNativeQuery(queryString, TagDAO.class);
-        query.setParameter("ITEM_ID", itemId);
+        final String queryString = "SELECT o FROM TagDAO o WHERE o.itemTypeId=:ITEM_TYPE_ID";
+        TypedQuery<TagDAO> query = entityManager.createQuery(queryString, TagDAO.class);
+        query.setParameter("ITEM_TYPE_ID", itemTypeId);
+        List<TagDAO> daoList = query.getResultList();
 
-        @SuppressWarnings("unchecked")
-        List<TagDAO> daoList = (List<TagDAO>) query.getResultList();
+        ArrayList<TagDAO> fields = new ArrayList<>();
 
         HashSet<Tag> tags = new HashSet<>();
 
@@ -100,17 +98,18 @@ class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Tag insertTag(EntityManager entityManager, Tag tag) {
+    public Tag insertTag(EntityManager entityManager, String name, int itemTypeId, String username) {
 
-        TagDAO dao = this.createDAO(tag);
+        TagDAO dao = new TagDAO();
+        dao.setName(name);
+        dao.setItemTypeId(itemTypeId);
+        dao.setUsernameOfOwner(username);
 
         entityManager.persist(dao);
 
         int id = dao.getId();
-        String name = dao.getName();
-        String usernameOfOwner = dao.getUsernameOfOwner();
 
-        return tagFactory.createTag(id, name, usernameOfOwner);
+        return tagFactory.createTag(id, name, username);
 
     }
 

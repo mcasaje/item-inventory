@@ -2,8 +2,10 @@ package models.items.types;
 
 import models.items.Item;
 import models.items.fields.Field;
+import models.items.tags.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents the blueprint of how to describe an instance of {@link Item}.
@@ -19,9 +21,15 @@ public interface ItemType {
 
     String getUsername();
 
+    Set<Tag> getTags();
+
     List<Field> getFields();
 
+    int countTags();
+
     int countFields();
+
+    boolean hasTags();
 
     boolean hasFields();
 }

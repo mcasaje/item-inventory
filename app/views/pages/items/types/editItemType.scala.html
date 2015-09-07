@@ -1,20 +1,39 @@
-@(title: String, message: String, fieldNameId: String)
+@import models.items.types.ItemType
+@(title: String, message: String, itemType: ItemType, newFieldRoute: String, fieldNameId: String, newTagRoute: String, tagNameId: String)
 
 @main(title) {
 
-    <h1>@title</h1>
+    <h1>@title '@itemType.getName'</h1>
 
     @if(message != null) {
         <h2>@message</h2>
     }
 
     <br />
-    <form action="" method="POST">
-        <label for="name">New Field</label>
+    <form action="@newFieldRoute" method="POST">
         <input id="name" name="@fieldNameId" type="text" />
-        <br />
-        <br />
-        <input type="submit" value="Create Field"/>
+        <input type="submit" value="New Field"/>
     </form>
+    <br />
+    <form action="@newTagRoute" method="POST">
+        <input id="name" name="@tagNameId" type="text" />
+        <input type="submit" value="New Tag"/>
+    </form>
+
+    <h3>Fields</h3>
+
+    <ul>
+    @for(field <- itemType.getFields) {
+        <li>@field.getName</li>
+    }
+    </ul>
+
+    <h3>Tags</h3>
+
+    <ul>
+    @for(tag <- itemType.getTags) {
+        <li>@tag.getName</li>
+    }
+    </ul>
 
 }

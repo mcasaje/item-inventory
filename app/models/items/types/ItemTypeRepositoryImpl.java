@@ -2,21 +2,26 @@ package models.items.types;
 
 import models.items.fields.Field;
 import models.items.fields.FieldRepository;
+import models.items.tags.Tag;
+import models.items.tags.TagRepository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 class ItemTypeRepositoryImpl implements ItemTypeRepository {
 
     private ItemTypeFactory itemTypeFactory;
+    private TagRepository tagRepository;
     private FieldRepository fieldRepository;
 
     @Inject
-    ItemTypeRepositoryImpl(ItemTypeFactory itemTypeFactory, FieldRepository fieldRepository) {
+    ItemTypeRepositoryImpl(ItemTypeFactory itemTypeFactory, TagRepository tagRepository, FieldRepository fieldRepository) {
         this.itemTypeFactory = itemTypeFactory;
+        this.tagRepository = tagRepository;
         this.fieldRepository = fieldRepository;
     }
 
@@ -34,8 +39,9 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
         String usernameOfOwner = itemTypeDAO.getUsernameOfOwner();
 
         List<Field> fields = fieldRepository.findFields(entityManager, id);
+        Set<Tag> tags = tagRepository.findTags(entityManager, id);
 
-        return itemTypeFactory.createItemType(id, name, usernameOfOwner, fields);
+        return itemTypeFactory.createItemType(id, name, usernameOfOwner, tags, fields);
     }
 
     @Override
@@ -57,8 +63,9 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
             assert username.equals(dao.getUsernameOfOwner());
 
             List<Field> fields = fieldRepository.findFields(entityManager, id);
+            Set<Tag> tags = tagRepository.findTags(entityManager, id);
 
-            ItemType itemType = itemTypeFactory.createItemType(id, name, username, fields);
+            ItemType itemType = itemTypeFactory.createItemType(id, name, username, tags, fields);
             itemTypes.add(itemType);
 
         }
@@ -80,7 +87,7 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
 
         int id = dao.getId();
 
-        return itemTypeFactory.createItemType(id, name, username, null);
+        return itemTypeFactory.createItemType(id, name, username, null, null);
     }
 
     @Override
