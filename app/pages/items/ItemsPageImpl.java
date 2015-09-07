@@ -32,7 +32,7 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     public Result get(String username) {
 
         try {
-            sessionAuthController.isSessionValid(session());
+            sessionAuthController.getUserId(session());
 
             List<Item> items = itemsController.getItems(username, ItemSortStrategy.ID_DESC);
             return ok((Content) index.render(username + "'s " + PAGE_TITLE, null, items, ITEM_NAME_ID));
@@ -47,7 +47,7 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     public Result post(String username) {
 
         try {
-            sessionAuthController.isSessionValid(session());
+            sessionAuthController.getUserId(session());
 
             DynamicForm form = Form.form().bindFromRequest();
             String itemName = form.get(ITEM_NAME_ID);

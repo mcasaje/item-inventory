@@ -27,13 +27,13 @@ class ItemFactoryImpl implements ItemFactory {
     }
 
     @Override
-    public Item createItem(int id, String itemName, String username) {
-        return this.createItem(id, itemName, username, null, null);
+    public Item createItem(int id, String itemName, int itemTypeId, String username) {
+        return this.createItem(id, itemName, itemTypeId, username, null, null);
     }
 
     @Override
-    public Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> itemFields) {
-        return new ItemImpl(id, itemName, username, tags, itemFields);
+    public Item createItem(int id, String itemName, int itemTypeId, String username, Set<Tag> tags, List<ItemField> itemFields) {
+        return new ItemImpl(id, itemName, itemTypeId, username, tags, itemFields);
     }
 
     @Override
@@ -41,11 +41,12 @@ class ItemFactoryImpl implements ItemFactory {
 
         int id = item.getId();
         String name = item.getName();
+        int itemTypeId = item.getItemTypeId();
         String username = item.getUsername();
         Set<Tag> tags = item.getTags();
         List<ItemField> fields = item.getItemFields();
 
-        return this.createItem(id, name, username, tags, fields);
+        return this.createItem(id, name, itemTypeId, username, tags, fields);
     }
 
 }

@@ -31,10 +31,11 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
         assert id == itemTypeDAO.getId();
 
         String name = itemTypeDAO.getName();
+        String usernameOfOwner = itemTypeDAO.getUsernameOfOwner();
 
         List<Field> fields = fieldRepository.findFields(entityManager, id);
 
-        return itemTypeFactory.createItemType(id, name, fields);
+        return itemTypeFactory.createItemType(id, name, usernameOfOwner, fields);
     }
 
     @Override
@@ -53,10 +54,11 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
 
             int id = dao.getId();
             String name = dao.getName();
+            assert username.equals(dao.getUsernameOfOwner());
 
             List<Field> fields = fieldRepository.findFields(entityManager, id);
 
-            ItemType itemType = itemTypeFactory.createItemType(id, name, fields);
+            ItemType itemType = itemTypeFactory.createItemType(id, name, username, fields);
             itemTypes.add(itemType);
 
         }
@@ -66,4 +68,43 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
         return itemTypes;
 
     }
+
+    @Override
+    public ItemType insert(EntityManager entityManager, String name, String username) {
+
+        ItemTypeDAO dao = new ItemTypeDAO();
+        dao.setName(name);
+        dao.setUsernameOfOwner(username);
+
+        entityManager.persist(dao);
+
+        int id = dao.getId();
+
+        return itemTypeFactory.createItemType(id, name, username, null);
+    }
+
+    @Override
+    public void delete(EntityManager entityManager, ItemType itemType) {
+
+        ItemTypeDAO dao = this.createDAO(itemType);
+
+        entityManager.merge(dao);
+        entityManager.remove(dao);
+
+    }
+
+    private ItemTypeDAO createDAO(ItemType itemType) {
+
+        int id = itemType.getId();
+        String name = itemType.getName();
+        String username = itemType.getUsername();
+
+        ItemTypeDAO dao = new ItemTypeDAO();
+        dao.setId(id);
+        dao.setName(name);
+        dao.setUsernameOfOwner(username);
+
+        return dao;
+    }
+
 }

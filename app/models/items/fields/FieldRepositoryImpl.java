@@ -100,16 +100,16 @@ class FieldRepositoryImpl implements FieldRepository {
     }
 
     @Override
-    public Field insertField(EntityManager entityManager, Field field) {
+    public Field insertField(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner) {
 
-        FieldDAO dao = this.createFieldDAO(field);
+        FieldDAO dao = new FieldDAO();
+        dao.setName(name);
+        dao.setItemTypeId(itemTypeId);
+        dao.setUsernameOfOwner(usernameOfOwner);
 
         entityManager.persist(dao);
 
         int id = dao.getId();
-        String name = dao.getName();
-        int itemTypeId = dao.getItemTypeId();
-        String usernameOfOwner = dao.getUsernameOfOwner();
 
         return fieldFactory.createField(id, name, itemTypeId, usernameOfOwner);
     }

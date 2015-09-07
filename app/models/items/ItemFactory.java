@@ -8,9 +8,9 @@ import java.util.Set;
 
 public interface ItemFactory {
 
-    Item createItem(int id, String itemName, String username);
+    Item createItem(int id, String itemName, int itemTypeId, String username);
 
-    Item createItem(int id, String itemName, String username, Set<Tag> tags, List<ItemField> fields);
+    Item createItem(int id, String itemName, int itemTypeId, String username, Set<Tag> tags, List<ItemField> fields);
 
     Item createItem(Item item);
 

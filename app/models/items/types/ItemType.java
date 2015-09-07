@@ -13,9 +13,11 @@ import java.util.List;
  */
 public interface ItemType {
 
-    int getId();
+    Integer getId();
 
     String getName();
+
+    String getUsername();
 
     List<Field> getFields();
 

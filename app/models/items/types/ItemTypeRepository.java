@@ -9,4 +9,8 @@ public interface ItemTypeRepository {
 
     List<ItemType> findItemTypes(EntityManager entityManager, String username);
 
+    ItemType insert(EntityManager entityManager, String name, String username);
+
+    void delete(EntityManager entityManager, ItemType itemType);
+
 }

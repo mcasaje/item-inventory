@@ -1,9 +1,6 @@
 package models.appusers;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Mutable, The Data Access Object representation of {@link AppUser} for ORM use.
@@ -13,6 +10,7 @@ import javax.persistence.Table;
 class AppUserDAO implements AppUser {
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private int id;
 

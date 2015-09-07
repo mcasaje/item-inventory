@@ -1,0 +1,20 @@
+@(title: String, message: String, fieldNameId: String)
+
+@main(title) {
+
+    <h1>@title</h1>
+
+    @if(message != null) {
+        <h2>@message</h2>
+    }
+
+    <br />
+    <form action="" method="POST">
+        <label for="name">New Field</label>
+        <input id="name" name="@fieldNameId" type="text" />
+        <br />
+        <br />
+        <input type="submit" value="Create Field"/>
+    </form>
+
+}

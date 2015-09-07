@@ -18,6 +18,8 @@ public interface Item {
 
     String getName();
 
+    int getItemTypeId();
+
     String getUsername();
 
     Set<Tag> getTags();

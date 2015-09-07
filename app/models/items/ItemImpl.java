@@ -15,13 +15,15 @@ class ItemImpl implements Item {
 
     private final int id;
     private final String name;
+    private int itemTypeId;
     private String username;
     private final Set<Tag> tags;
     private final List<ItemField> itemFields;
 
-    ItemImpl(int id, String name, String username, Set<Tag> tags, List<ItemField> itemFields) {
+    ItemImpl(int id, String name, int itemTypeId, String username, Set<Tag> tags, List<ItemField> itemFields) {
         this.id = id;
         this.name = name;
+        this.itemTypeId = itemTypeId;
         this.username = username;
         this.tags = tags;
         this.itemFields = itemFields;
@@ -35,6 +37,11 @@ class ItemImpl implements Item {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int getItemTypeId() {
+        return itemTypeId;
     }
 
     @Override

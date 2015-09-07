@@ -40,12 +40,13 @@ class ItemRepositoryImpl implements ItemRepository {
         ItemDAO dao = query.getSingleResult();
         id = dao.getId();
         String name = dao.getName();
+        int itemTypeId = dao.getItemTypeId();
         String usernameOfOwner = dao.getUsernameOfOwner();
 
         Set<Tag> tags = tagRepository.findTags(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
-        return itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields);
+        return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
 
     }
 
@@ -59,13 +60,14 @@ class ItemRepositoryImpl implements ItemRepository {
         ItemDAO dao = query.getSingleResult();
         int id = dao.getId();
         name = dao.getName();
+        int itemTypeId = dao.getItemTypeId();
 
         assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
         Set<Tag> tags = tagRepository.findTags(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
-        return itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields);
+        return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
 
     }
 
@@ -82,12 +84,13 @@ class ItemRepositoryImpl implements ItemRepository {
         for (ItemDAO dao : daoList) {
             int id = dao.getId();
             String name = dao.getName();
+            int itemTypeId = dao.getItemTypeId();
 
             assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
             Set<Tag> tags = tagRepository.findTags(entityManager, id);
             List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
-            Item item = itemFactory.createItem(id, name, usernameOfOwner, tags, itemFields);
+            Item item = itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
             items.add(item);
         }
 
@@ -106,9 +109,10 @@ class ItemRepositoryImpl implements ItemRepository {
 
         int id = dao.getId();
         String name = dao.getName();
+        int itemTypeId = dao.getItemTypeId();
         String usernameOfOwner = dao.getUsernameOfOwner();
 
-        return itemFactory.createItem(id, name, usernameOfOwner);
+        return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner);
 
     }
 

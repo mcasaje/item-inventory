@@ -13,7 +13,7 @@ public interface FieldRepository {
 
     List<Field> findFields(EntityManager entityManager, int itemTypeId);
 
-    Field insertField(EntityManager entityManager, Field field);
+    Field insertField(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner);
 
     void deleteField(EntityManager entityManager, Field field);
 

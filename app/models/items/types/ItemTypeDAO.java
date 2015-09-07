@@ -1,15 +1,13 @@
 package models.items.types;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "item_type")
 class ItemTypeDAO {
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private int id;
 

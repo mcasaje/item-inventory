@@ -1,20 +1,21 @@
 package models.items;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
 class ItemDAO {
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private int id;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "item_type_id")
+    private int itemTypeId;
 
     @Column(name = "username")
     private String usernameOfOwner;
@@ -27,6 +28,10 @@ class ItemDAO {
         return name;
     }
 
+    int getItemTypeId() {
+        return itemTypeId;
+    }
+
     String getUsernameOfOwner() {
         return usernameOfOwner;
     }
@@ -37,6 +42,10 @@ class ItemDAO {
 
     void setName(String name) {
         this.name = name;
+    }
+
+    void setItemTypeId(int itemTypeId) {
+        this.itemTypeId = itemTypeId;
     }
 
     void setUsernameOfOwner(String usernameOfOwner) {

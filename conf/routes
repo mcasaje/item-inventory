@@ -3,24 +3,32 @@
 # ~~~~
 
 # Home page - Play Test Page
-GET         /                             @pages.Application.index()
+GET         /                                     @pages.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                 controllers.Assets.at(path="/public", file)
+GET         /assets/*file                         controllers.Assets.at(path="/public", file)
 
 
 # App Users
 
-GET         /users/new                    @pages.appusers.SignUpPage.get()
-POST        /users/new                    @pages.appusers.SignUpPage.post()
+GET         /users/new                            @pages.appusers.SignUpPage.get()
+POST        /users/new                            @pages.appusers.SignUpPage.post()
 
-GET         /users/login                  @pages.appusers.LoginPage.get()
-POST        /users/login                  @pages.appusers.LoginPage.post()
-
+GET         /users/login                          @pages.appusers.LoginPage.get()
+POST        /users/login                          @pages.appusers.LoginPage.post()
 #GET        /users/logout
 
+# Item Types
+
+#GET         /item_types            @pages.items.types.ItemTypesPage.get()
+
+GET         /item_types/new                       @pages.items.types.NewItemTypePage.get()
+POST        /item_types/new                       @pages.items.types.NewItemTypePage.post()
+
+GET         /item_types/:item_type_id/edit        @pages.items.types.ItemTypeEditPage.get(item_type_id:Integer)
+POST        /item_types/:item_type_id/edit        @pages.items.types.ItemTypeEditPage.post(item_type_id:Integer)
 
 # Items
 
-GET         /users/:username/items        @pages.items.ItemsPage.get(username:String)
-POST        /users/:username/items        @pages.items.ItemsPage.post(username:String)
+GET         /users/:username/items                @pages.items.ItemsPage.get(username:String)
+POST        /users/:username/items                @pages.items.ItemsPage.post(username:String)
