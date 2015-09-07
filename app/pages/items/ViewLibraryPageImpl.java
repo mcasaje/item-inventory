@@ -17,7 +17,7 @@ import java.util.List;
 
 class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
 
-    private final String ITEM_NAME_ID = "new_item_name";
+    private final String ITEM_DETAILS_QUERY_KEY = "details";
     private SessionAuthController sessionAuthController;
     private ItemTypesController itemTypesController;
     private ItemsController itemsController;
@@ -35,13 +35,16 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
         try {
             String username = sessionAuthController.getUsername(session());
 
+            String[] detailsVal = request().queryString().get(ITEM_DETAILS_QUERY_KEY);
+            boolean showDetails = detailsVal != null && detailsVal.length > 0 && detailsVal[0].equals("true");
+
             ItemType itemType = itemTypesController.getItemType(itemTypeId);
             List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
 
             String itemTypeName = itemType.getName();
             final String pageTitle = String.format("'%s' Library", itemTypeName);
 
-            return ok((Content) viewLibrary.render(pageTitle, null, itemType, items, ITEM_NAME_ID));
+            return ok((Content) viewLibrary.render(pageTitle, showDetails, itemType, items));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

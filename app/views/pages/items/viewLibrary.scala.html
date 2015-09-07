@@ -1,20 +1,71 @@
-@(title: String, message: String, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], itemNameId: String)
+@(title: String, showDetails: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item])
 
 
 @main(true, title) {
 
     <h1>@title</h1>
 
-    @if(message != null) {
-        <h2>@message</h2>
+    <a href="/libraries/@itemType.getId/items/new">Add a @itemType.getName</a>
+
+    @if(items.size() > 0) {
+
+        <br />
+        <br />
+        @if(showDetails) {
+            <a href="?details=false">Hide Details</a>
+        } else {
+            <a href="?details=true">Show Details</a>
+        }
+
     }
 
-    <a href="/libraries/@itemType.getId/items/new">Add</a>
+    @if(showDetails) {
 
-    <ul>
-    @for(item <- items) {
-        <li><a href="@itemType.getId/items/@item.getId">@item.getName</a></li>
+        <br/>
+        <br/>
+
+        <table border="1">
+
+            <tr id="table_header">
+                <td><b>Name</b></td>
+                @for(field <- itemType.getFields) {
+                    <td><b>@field.getName</b></td>
+                }
+            </tr>
+
+            @for(item <- items) {
+
+                <tr>
+
+                    <td>@item.getName</td>
+
+                    @for(field <- itemType.getFields) {
+
+                        <td>
+
+                        @if(item.getItemField(field.getId) != null) {
+                            @item.getItemField(field.getId).getValue
+                        }
+
+                        </td>
+
+                    }
+
+                </tr>
+
+            }
+
+        </table>
+
+    } else {
+
+        <ul>
+        @for(item <- items) {
+            <li><a href="@itemType.getId/items/@item.getId">@item.getName</a></li>
+        }
+        </ul>
+
     }
-    </ul>
+
 
 }
