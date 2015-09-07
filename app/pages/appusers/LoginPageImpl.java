@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 class LoginPageImpl extends Controller implements LoginPage {
 
-    private final String PAGE_TITLE = "Login";
     private final String USERNAME_ID = "username";
     private final String PASSWORD_ID = "password";
     private LoginController loginController;
@@ -25,11 +24,14 @@ class LoginPageImpl extends Controller implements LoginPage {
 
     @Override
     public Result get() {
-        return ok(login.render(PAGE_TITLE, null, USERNAME_ID, "", PASSWORD_ID));
+        final String pageTitle = "Login";
+        return ok(login.render(pageTitle, null, USERNAME_ID, "", PASSWORD_ID));
     }
 
     @Override
     public Result post() {
+
+        final String pageTitle = "Login";
 
         DynamicForm form = Form.form().bindFromRequest();
         String username = form.get(USERNAME_ID);
@@ -42,16 +44,16 @@ class LoginPageImpl extends Controller implements LoginPage {
             session(SessionAuthController.USER_ID_SESS_KEY, appUser.getId().toString());
             session(SessionAuthController.USERNAME_SESS_KEY, appUser.getUsername());
 
-            return redirect(pages.items.routes.ItemsPage.get());
+            return redirect(routes.DashboardPage.get());
 
         } catch (UsernameRequiredException e) {
-            return ok(login.render(PAGE_TITLE, "Username is required!", USERNAME_ID, username, PASSWORD_ID));
+            return ok(login.render(pageTitle, "Username is required!", USERNAME_ID, username, PASSWORD_ID));
         } catch (PasswordRequiredException e) {
-            return ok(login.render(PAGE_TITLE, "Password is required!", USERNAME_ID, username, PASSWORD_ID));
+            return ok(login.render(pageTitle, "Password is required!", USERNAME_ID, username, PASSWORD_ID));
         } catch (UserDoesNotExistException e) {
-            return ok(login.render(PAGE_TITLE, "User " + username + " does not exist!", USERNAME_ID, username, PASSWORD_ID));
+            return ok(login.render(pageTitle, "User " + username + " does not exist!", USERNAME_ID, username, PASSWORD_ID));
         } catch (InvalidPasswordException e) {
-            return ok(login.render(PAGE_TITLE, "Invalid password!", USERNAME_ID, username, PASSWORD_ID));
+            return ok(login.render(pageTitle, "Invalid password!", USERNAME_ID, username, PASSWORD_ID));
         }
 
     }

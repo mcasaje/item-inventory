@@ -10,7 +10,7 @@ import com.google.inject.AbstractModule;
 
 public class ItemsPageModule extends AbstractModule {
     protected void configure() {
-        bind(ItemsPage.class).to(ItemsPageImpl.class);
-        bind(EditItemPage.class).to(EditItemPageImpl.class);
+        bind(ItemsPage.class).to(ItemsPageImpl.class).asEagerSingleton();
+        bind(EditItemPage.class).to(EditItemPageImpl.class).asEagerSingleton();
     }
 }

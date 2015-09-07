@@ -9,7 +9,7 @@ public interface ItemRepository {
 
     Item findItem(EntityManager entityManager, String name, String usernameOfOwner);
 
-    List<Item> findItems(EntityManager entityManager, String usernameOfOwner);
+    List<Item> findItems(EntityManager entityManager, int itemTypeId, String usernameOfOwner);
 
     Item insertItem(EntityManager entityManager, Item item);
 

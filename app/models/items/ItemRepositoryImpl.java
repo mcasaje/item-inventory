@@ -72,10 +72,11 @@ class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<Item> findItems(EntityManager entityManager, String usernameOfOwner) {
+    public List<Item> findItems(EntityManager entityManager, int itemTypeId, String usernameOfOwner) {
 
-        final String queryString = "SELECT o FROM ItemDAO o WHERE o.usernameOfOwner=:USERNAME_OF_OWNER";
+        final String queryString = "SELECT o FROM ItemDAO o WHERE o.itemTypeId=:ITEM_TYPE_ID AND o.usernameOfOwner=:USERNAME_OF_OWNER";
         TypedQuery<ItemDAO> query = entityManager.createQuery(queryString, ItemDAO.class);
+        query.setParameter("ITEM_TYPE_ID", itemTypeId);
         query.setParameter("USERNAME_OF_OWNER", usernameOfOwner);
         List<ItemDAO> daoList = query.getResultList();
 
@@ -84,9 +85,9 @@ class ItemRepositoryImpl implements ItemRepository {
         for (ItemDAO dao : daoList) {
             int id = dao.getId();
             String name = dao.getName();
-            int itemTypeId = dao.getItemTypeId();
 
             assert usernameOfOwner.equals(dao.getUsernameOfOwner());
+            assert itemTypeId == dao.getItemTypeId();
 
             Set<Tag> tags = tagRepository.findTags(entityManager, id);
             List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);

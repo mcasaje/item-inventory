@@ -24,7 +24,7 @@ class ItemsControllerImpl implements ItemsController {
     }
 
     @Override
-    public List<Item> getItems(String username, ItemSortStrategy sortStrategy) {
+    public List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy) {
 
         EntityManager entityManager = jpaUtils.createEntityManager();
 
@@ -32,7 +32,7 @@ class ItemsControllerImpl implements ItemsController {
 
             entityManager.getTransaction().begin();
 
-            List<Item> items = itemRepository.findItems(entityManager, username);
+            List<Item> items = itemRepository.findItems(entityManager, itemTypeId, username);
             itemSorter.sortItems(items, sortStrategy);
 
             entityManager.getTransaction().commit();

@@ -4,8 +4,8 @@ import play.mvc.Result;
 
 public interface ItemsPage {
 
-    Result get();
+    Result get(int itemTypeId);
 
-    Result post();
+    Result post(int itemTypeId);
 
 }

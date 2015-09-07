@@ -18,6 +18,8 @@ GET         /users/login                            @pages.appusers.LoginPage.ge
 POST        /users/login                            @pages.appusers.LoginPage.post()
 #GET        /users/logout
 
+GET         /dashboard                          @pages.appusers.DashboardPage.get()
+
 # Item Types
 
 GET         /item_types                             @pages.items.types.ItemTypesPage.get()
@@ -30,5 +32,5 @@ POST        /item_types/:item_type_id/tags          @pages.items.types.EditItemT
 
 # Items
 
-GET         /items                                  @pages.items.ItemsPage.get()
-POST        /items                                  @pages.items.ItemsPage.post()
+GET         /library/:item_type_id/items        @pages.items.ItemsPage.get(item_type_id:Integer)
+POST        /library/:item_type_id/items        @pages.items.ItemsPage.post(item_type_id:Integer)

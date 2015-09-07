@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface ItemsController {
 
-    List<Item> getItems(String username, ItemSortStrategy sortStrategy);
+    List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy);
 
 }

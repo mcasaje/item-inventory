@@ -10,7 +10,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Content;
-import views.html.pages.items.index;
+import views.html.pages.items.library;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -29,13 +29,13 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     }
 
     @Override
-    public Result get() {
+    public Result get(int itemTypeId) {
 
         try {
             String username = sessionAuthController.getUsername(session());
 
-            List<Item> items = itemsController.getItems(username, ItemSortStrategy.ID_DESC);
-            return ok((Content) index.render(username + "'s " + PAGE_TITLE, null, items, ITEM_NAME_ID));
+            List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
+            return ok((Content) library.render(username + "'s " + PAGE_TITLE, null, items, ITEM_NAME_ID));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());
@@ -44,7 +44,7 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     }
 
     @Override
-    public Result post() {
+    public Result post(int itemTypeId) {
 
         try {
             String username = sessionAuthController.getUsername(session());
@@ -53,11 +53,12 @@ class ItemsPageImpl extends Controller implements ItemsPage {
             String itemName = form.get(ITEM_NAME_ID);
 
 
-            return redirect(pages.items.routes.ItemsPage.get());
+            return redirect(pages.items.routes.ItemsPage.get(itemTypeId));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());
         }
 
     }
+
 }
