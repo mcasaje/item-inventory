@@ -12,14 +12,15 @@
 
     <br />
     <form action="" method="POST">
-        <input id="name" name="@itemTypeNameId" type="text" /> <input type="submit" value="Create Item Type"/>
+        <input id="name" name="@itemTypeNameId" type="text" /> <input type="submit" value="Create Library"/>
     </form>
-
-    <h3>Item Types</h3>
 
     <ul>
     @for(itemType <- itemTypes) {
-        <li>@itemType.getName</li>
+        <li>
+            <a href="/libraries/@itemType.getId/items">@itemType.getName</a>
+            (<a href="/libraries/@itemType.getId/edit">Edit</a>)
+        </li>
     }
     </ul>
 

@@ -4,7 +4,6 @@ import models.items.fields.Field;
 import models.items.tags.Tag;
 
 import java.util.List;
-import java.util.Set;
 
 class ItemTypeFactoryImpl implements ItemTypeFactory {
 
@@ -14,7 +13,7 @@ class ItemTypeFactoryImpl implements ItemTypeFactory {
     }
 
     @Override
-    public ItemType createItemType(int id, String name, String username, Set<Tag> tags, List<Field> fields) {
+    public ItemType createItemType(int id, String name, String username, List<Tag> tags, List<Field> fields) {
         return new ItemTypeImpl(id, name, username, tags, fields);
     }
 }

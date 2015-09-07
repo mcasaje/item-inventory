@@ -3,28 +3,29 @@ package pages.items;
 import controllers.appusers.sessions.SessionAuthController;
 import controllers.appusers.sessions.UnauthorizedException;
 import controllers.items.ItemsController;
+import controllers.items.types.ItemTypesController;
 import models.items.Item;
-import models.items.utils.sorting.ItemSortStrategy;
-import play.data.DynamicForm;
-import play.data.Form;
+import models.items.types.ItemType;
+import models.items.utils.sorting.items.ItemSortStrategy;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Content;
-import views.html.pages.items.library;
+import views.html.pages.items.viewLibrary;
 
 import javax.inject.Inject;
 import java.util.List;
 
-class ItemsPageImpl extends Controller implements ItemsPage {
+class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
 
-    private final String PAGE_TITLE = "Items";
     private final String ITEM_NAME_ID = "new_item_name";
     private SessionAuthController sessionAuthController;
+    private ItemTypesController itemTypesController;
     private ItemsController itemsController;
 
     @Inject
-    ItemsPageImpl(SessionAuthController sessionAuthController, ItemsController itemsController) {
+    ViewLibraryPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController, ItemsController itemsController) {
         this.sessionAuthController = sessionAuthController;
+        this.itemTypesController = itemTypesController;
         this.itemsController = itemsController;
     }
 
@@ -34,26 +35,13 @@ class ItemsPageImpl extends Controller implements ItemsPage {
         try {
             String username = sessionAuthController.getUsername(session());
 
+            ItemType itemType = itemTypesController.getItemType(itemTypeId);
             List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
-            return ok((Content) library.render(username + "'s " + PAGE_TITLE, null, items, ITEM_NAME_ID));
 
-        } catch (UnauthorizedException e) {
-            return redirect(pages.appusers.routes.LoginPage.get());
-        }
+            String itemTypeName = itemType.getName();
+            final String pageTitle = String.format("%s Library", itemTypeName);
 
-    }
-
-    @Override
-    public Result post(int itemTypeId) {
-
-        try {
-            String username = sessionAuthController.getUsername(session());
-
-            DynamicForm form = Form.form().bindFromRequest();
-            String itemName = form.get(ITEM_NAME_ID);
-
-
-            return redirect(pages.items.routes.ItemsPage.get(itemTypeId));
+            return ok((Content) viewLibrary.render(pageTitle, null, itemType, items, ITEM_NAME_ID));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

@@ -18,19 +18,21 @@ GET         /users/login                            @pages.appusers.LoginPage.ge
 POST        /users/login                            @pages.appusers.LoginPage.post()
 #GET        /users/logout
 
-GET         /dashboard                          @pages.appusers.DashboardPage.get()
+#GET         /dashboard                              @pages.appusers.DashboardPage.get()
 
 # Item Types
 
-GET         /item_types                             @pages.items.types.ItemTypesPage.get()
-POST        /item_types                             @pages.items.types.NewItemTypePage.post()
+GET         /libraries                                @pages.items.types.LibrariesPage.get()
+POST        /libraries                                @pages.items.types.NewLibraryPage.post()
 
-GET         /item_types/:item_type_id/edit          @pages.items.types.EditItemTypePage.get(item_type_id:Integer)
-POST        /item_types/:item_type_id/fields        @pages.items.types.EditItemTypePage.postField(item_type_id:Integer)
-POST        /item_types/:item_type_id/tags          @pages.items.types.EditItemTypePage.postTag(item_type_id:Integer)
+GET         /libraries/:item_type_id/edit             @pages.items.types.EditLibraryPage.get(item_type_id:Integer)
+POST        /libraries/:item_type_id/fields           @pages.items.types.EditLibraryPage.postField(item_type_id:Integer)
+POST        /libraries/:item_type_id/tags             @pages.items.types.EditLibraryPage.postTag(item_type_id:Integer)
 
 
 # Items
 
-GET         /library/:item_type_id/items        @pages.items.ItemsPage.get(item_type_id:Integer)
-POST        /library/:item_type_id/items        @pages.items.ItemsPage.post(item_type_id:Integer)
+GET         /libraries/:item_type_id/items            @pages.items.ViewLibraryPage.get(item_type_id:Integer)
+
+GET         /libraries/:item_type_id/items/new        @pages.items.NewItemPage.get(item_type_id:Integer)
+POST        /libraries/:item_type_id/items/new        @pages.items.NewItemPage.post(item_type_id:Integer)

@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Queries for {@link Item} instances.
@@ -43,7 +42,7 @@ class ItemRepositoryImpl implements ItemRepository {
         int itemTypeId = dao.getItemTypeId();
         String usernameOfOwner = dao.getUsernameOfOwner();
 
-        Set<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTags(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
         return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
@@ -64,7 +63,7 @@ class ItemRepositoryImpl implements ItemRepository {
 
         assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
-        Set<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTags(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
         return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
@@ -89,7 +88,7 @@ class ItemRepositoryImpl implements ItemRepository {
             assert usernameOfOwner.equals(dao.getUsernameOfOwner());
             assert itemTypeId == dao.getItemTypeId();
 
-            Set<Tag> tags = tagRepository.findTags(entityManager, id);
+            List<Tag> tags = tagRepository.findTags(entityManager, id);
             List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
             Item item = itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
             items.add(item);
@@ -102,16 +101,16 @@ class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item insertItem(EntityManager entityManager, Item item) {
+    public Item insertItem(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner) {
 
-        ItemDAO dao = this.createDAO(item);
+        ItemDAO dao = new ItemDAO();
+        dao.setName(name);
+        dao.setItemTypeId(itemTypeId);
+        dao.setUsernameOfOwner(usernameOfOwner);
 
         entityManager.persist(dao);
 
         int id = dao.getId();
-        String name = dao.getName();
-        int itemTypeId = dao.getItemTypeId();
-        String usernameOfOwner = dao.getUsernameOfOwner();
 
         return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner);
 

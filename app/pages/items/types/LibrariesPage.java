@@ -2,8 +2,8 @@ package pages.items.types;
 
 import play.mvc.Result;
 
-public interface NewItemTypePage {
+public interface LibrariesPage {
 
-    Result post();
+    Result get();
 
 }

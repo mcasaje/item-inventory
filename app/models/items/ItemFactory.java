@@ -10,7 +10,7 @@ public interface ItemFactory {
 
     Item createItem(int id, String itemName, int itemTypeId, String username);
 
-    Item createItem(int id, String itemName, int itemTypeId, String username, Set<Tag> tags, List<ItemField> fields);
+    Item createItem(int id, String itemName, int itemTypeId, String username, List<Tag> tags, List<ItemField> fields);
 
     Item createItem(Item item);
 

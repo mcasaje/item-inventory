@@ -11,7 +11,7 @@ public interface ItemRepository {
 
     List<Item> findItems(EntityManager entityManager, int itemTypeId, String usernameOfOwner);
 
-    Item insertItem(EntityManager entityManager, Item item);
+    Item insertItem(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner);
 
     void deleteItem(EntityManager entityManager, Item item);
 

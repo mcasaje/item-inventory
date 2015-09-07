@@ -4,16 +4,14 @@ import models.items.fields.Field;
 import models.items.tags.Tag;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class ItemTypeImpl implements ItemType {
 
     private final Integer id;
     private final String name;
     private final String username;
-    private Set<Tag> tags;
+    private List<Tag> tags;
     private final List<Field> fields;
 
     ItemTypeImpl(String name, String username) {
@@ -23,7 +21,7 @@ class ItemTypeImpl implements ItemType {
         this.fields = null;
     }
 
-    ItemTypeImpl(int id, String name, String username, Set<Tag> tags, List<Field> fields) {
+    ItemTypeImpl(int id, String name, String username, List<Tag> tags, List<Field> fields) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -47,8 +45,8 @@ class ItemTypeImpl implements ItemType {
     }
 
     @Override
-    public Set<Tag> getTags() {
-        return new HashSet<>(tags);
+    public List<Tag> getTags() {
+        return new ArrayList<>(tags);
     }
 
     @Override

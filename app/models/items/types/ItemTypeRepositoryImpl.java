@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 class ItemTypeRepositoryImpl implements ItemTypeRepository {
 
@@ -39,7 +38,7 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
         String usernameOfOwner = itemTypeDAO.getUsernameOfOwner();
 
         List<Field> fields = fieldRepository.findFields(entityManager, id);
-        Set<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTags(entityManager, id);
 
         return itemTypeFactory.createItemType(id, name, usernameOfOwner, tags, fields);
     }
@@ -63,7 +62,7 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
             assert username.equals(dao.getUsernameOfOwner());
 
             List<Field> fields = fieldRepository.findFields(entityManager, id);
-            Set<Tag> tags = tagRepository.findTags(entityManager, id);
+            List<Tag> tags = tagRepository.findTags(entityManager, id);
 
             ItemType itemType = itemTypeFactory.createItemType(id, name, username, tags, fields);
             itemTypes.add(itemType);

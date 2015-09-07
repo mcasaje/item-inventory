@@ -21,7 +21,7 @@ public interface ItemType {
 
     String getUsername();
 
-    Set<Tag> getTags();
+    List<Tag> getTags();
 
     List<Field> getFields();
 

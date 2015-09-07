@@ -4,9 +4,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class TagRepositoryImpl implements TagRepository {
 
@@ -50,14 +48,14 @@ class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Set<Tag> findTags(EntityManager entityManager, String usernameOfOwner) {
+    public List<Tag> findTags(EntityManager entityManager, String usernameOfOwner) {
 
         final String queryString = "SELECT o FROM TagDAO o WHERE o.usernameOfOwner=:USERNAME_OF_OWNER";
         TypedQuery<TagDAO> query = entityManager.createQuery(queryString, TagDAO.class);
         query.setParameter("USERNAME_OF_OWNER", usernameOfOwner);
         List<TagDAO> daoList = query.getResultList();
 
-        HashSet<Tag> tags = new HashSet<>();
+        ArrayList<Tag> tags = new ArrayList<>();
 
         for (TagDAO dao : daoList) {
             int id = dao.getId();
@@ -74,16 +72,14 @@ class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Set<Tag> findTags(EntityManager entityManager, int itemTypeId) {
+    public List<Tag> findTags(EntityManager entityManager, int itemTypeId) {
 
-        final String queryString = "SELECT o FROM TagDAO o WHERE o.itemTypeId=:ITEM_TYPE_ID";
+        final String queryString = "SELECT o FROM TagDAO o WHERE o.itemTypeId=:ITEM_TYPE_ID ORDER BY o.name ASC";
         TypedQuery<TagDAO> query = entityManager.createQuery(queryString, TagDAO.class);
         query.setParameter("ITEM_TYPE_ID", itemTypeId);
         List<TagDAO> daoList = query.getResultList();
 
-        ArrayList<TagDAO> fields = new ArrayList<>();
-
-        HashSet<Tag> tags = new HashSet<>();
+        ArrayList<Tag> tags = new ArrayList<>();
 
         for (TagDAO dao : daoList) {
             int id = dao.getId();
@@ -110,6 +106,18 @@ class TagRepositoryImpl implements TagRepository {
         int id = dao.getId();
 
         return tagFactory.createTag(id, name, username);
+
+    }
+
+    @Override
+    public void insertItemTag(EntityManager entityManager, int itemId, int tagId, String username) {
+
+        ItemTagDAO dao = new ItemTagDAO();
+        dao.setItemId(itemId);
+        dao.setTagId(tagId);
+        dao.setUsernameOfOwner(username);
+
+        entityManager.persist(dao);
 
     }
 

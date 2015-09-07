@@ -58,19 +58,19 @@ class ItemFieldRepositoryImpl implements ItemFieldRepository {
     }
 
     @Override
-    public ItemField insertItemField(EntityManager entityManager, ItemField itemField) {
+    public ItemField insertItemField(EntityManager entityManager, int itemId, int fieldId, String username, String fieldValue) {
 
-        ItemFieldDAO dao = this.createItemFieldDAO(itemField);
+        ItemFieldDAO dao = new ItemFieldDAO();
+        dao.setItemId(itemId);
+        dao.setFieldId(fieldId);
+        dao.setUsernameOfOwner(username);
+        dao.setValue(fieldValue);
 
         entityManager.persist(dao);
 
         int id = dao.getId();
-        int itemId = dao.getItemId();
-        int fieldId = dao.getFieldId();
-        String usernameOfOwner = dao.getUsernameOfOwner();
-        String value = dao.getValue();
 
-        return itemFieldFactory.createItemField(id, itemId, fieldId, usernameOfOwner, value);
+        return itemFieldFactory.createItemField(id, itemId, fieldId, username, fieldValue);
 
     }
 

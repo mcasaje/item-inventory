@@ -9,7 +9,7 @@ public interface ItemFieldRepository {
 
     List<ItemField> findItemFields(EntityManager entityManager, int itemId);
 
-    ItemField insertItemField(EntityManager entityManager, ItemField field);
+    ItemField insertItemField(EntityManager entityManager, int itemId, int fieldId, String username, String fieldValue);
 
     void deleteItemField(EntityManager entityManager, ItemField field);
 

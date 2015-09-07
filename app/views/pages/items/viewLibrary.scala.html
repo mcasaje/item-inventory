@@ -1,0 +1,20 @@
+@(title: String, message: String, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], itemNameId: String)
+
+
+    @main(title) {
+
+        <h1>@title</h1>
+
+        @if(message != null) {
+            <h2>@message</h2>
+        }
+
+        <a href="/libraries/@itemType.getId/items/new">Add</a>
+
+        <ul>
+        @for(item <- items) {
+            <li>@item.getName</li>
+        }
+        </ul>
+
+    }

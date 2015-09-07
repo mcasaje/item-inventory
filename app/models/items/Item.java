@@ -22,7 +22,7 @@ public interface Item {
 
     String getUsername();
 
-    Set<Tag> getTags();
+    List<Tag> getTags();
 
     List<ItemField> getItemFields();
 

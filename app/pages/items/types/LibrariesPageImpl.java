@@ -11,7 +11,7 @@ import play.twirl.api.Content;
 import javax.inject.Inject;
 import java.util.List;
 
-class ItemTypesPageImpl extends Controller implements ItemTypesPage {
+class LibrariesPageImpl extends Controller implements LibrariesPage {
 
     private final String ITEM_TYPE_NAME_ID = "item_type_name";
 
@@ -19,7 +19,7 @@ class ItemTypesPageImpl extends Controller implements ItemTypesPage {
     private final ItemTypesController itemTypesController;
 
     @Inject
-    ItemTypesPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
+    LibrariesPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
         this.sessionAuthController = sessionAuthController;
         this.itemTypesController = itemTypesController;
     }
@@ -32,9 +32,9 @@ class ItemTypesPageImpl extends Controller implements ItemTypesPage {
 
             List<ItemType> itemTypes = itemTypesController.getItemTypes(username);
 
-            final String pageTitle = "Item Types";
+            final String pageTitle = "Your Libraries";
 
-            return ok((Content) views.html.pages.items.types.index.render(pageTitle, null, itemTypes, ITEM_TYPE_NAME_ID));
+            return ok((Content) views.html.pages.items.libraries.viewLibraries.render(pageTitle, null, itemTypes, ITEM_TYPE_NAME_ID));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

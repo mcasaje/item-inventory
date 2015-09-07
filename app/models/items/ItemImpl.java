@@ -4,9 +4,7 @@ import models.items.itemfields.ItemField;
 import models.items.tags.Tag;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Immutable
@@ -17,10 +15,10 @@ class ItemImpl implements Item {
     private final String name;
     private int itemTypeId;
     private String username;
-    private final Set<Tag> tags;
+    private final List<Tag> tags;
     private final List<ItemField> itemFields;
 
-    ItemImpl(int id, String name, int itemTypeId, String username, Set<Tag> tags, List<ItemField> itemFields) {
+    ItemImpl(int id, String name, int itemTypeId, String username, List<Tag> tags, List<ItemField> itemFields) {
         this.id = id;
         this.name = name;
         this.itemTypeId = itemTypeId;
@@ -50,8 +48,8 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public Set<Tag> getTags() {
-        return new HashSet<>(tags);
+    public List<Tag> getTags() {
+        return new ArrayList<>(tags);
     }
 
     @Override

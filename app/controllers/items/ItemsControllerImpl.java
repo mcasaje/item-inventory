@@ -2,8 +2,8 @@ package controllers.items;
 
 import models.items.Item;
 import models.items.ItemRepository;
-import models.items.utils.sorting.ItemSortStrategy;
-import models.items.utils.sorting.ItemSorter;
+import models.items.utils.sorting.items.ItemSortStrategy;
+import models.items.utils.sorting.items.ItemSorter;
 import models.jpa.JPAUtils;
 
 import javax.inject.Inject;
@@ -21,6 +21,24 @@ class ItemsControllerImpl implements ItemsController {
         this.jpaUtils = jpaUtils;
         this.itemRepository = itemRepository;
         this.itemSorter = itemSorter;
+    }
+
+    @Override
+    public Item createItem(String name, int itemTypeId, String username) {
+
+        EntityManager entityManager = jpaUtils.createEntityManager();
+
+        try {
+
+            entityManager.getTransaction().begin();
+            Item item = itemRepository.insertItem(entityManager, name, itemTypeId, username);
+            entityManager.getTransaction().commit();
+
+            return item;
+
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override

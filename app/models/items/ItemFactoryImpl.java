@@ -32,7 +32,7 @@ class ItemFactoryImpl implements ItemFactory {
     }
 
     @Override
-    public Item createItem(int id, String itemName, int itemTypeId, String username, Set<Tag> tags, List<ItemField> itemFields) {
+    public Item createItem(int id, String itemName, int itemTypeId, String username, List<Tag> tags, List<ItemField> itemFields) {
         return new ItemImpl(id, itemName, itemTypeId, username, tags, itemFields);
     }
 
@@ -43,7 +43,7 @@ class ItemFactoryImpl implements ItemFactory {
         String name = item.getName();
         int itemTypeId = item.getItemTypeId();
         String username = item.getUsername();
-        Set<Tag> tags = item.getTags();
+        List<Tag> tags = item.getTags();
         List<ItemField> fields = item.getItemFields();
 
         return this.createItem(id, name, itemTypeId, username, tags, fields);

@@ -2,7 +2,7 @@ package pages.items;
 
 import play.mvc.Result;
 
-public interface ItemsPage {
+public interface NewItemPage {
 
     Result get(int itemTypeId);
 

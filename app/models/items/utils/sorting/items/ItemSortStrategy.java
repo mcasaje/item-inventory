@@ -1,4 +1,4 @@
-package models.items.utils.sorting;
+package models.items.utils.sorting.items;
 
 /**
  * Defines various ways that items can be sorted.

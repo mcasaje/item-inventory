@@ -2,7 +2,7 @@ package pages.items.types;
 
 import play.mvc.Result;
 
-public interface EditItemTypePage {
+public interface EditLibraryPage {
 
     Result get(int itemTypeId);
 

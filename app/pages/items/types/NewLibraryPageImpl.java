@@ -12,15 +12,14 @@ import play.mvc.Result;
 
 import javax.inject.Inject;
 
-class NewItemTypePageImpl extends Controller implements NewItemTypePage {
+class NewLibraryPageImpl extends Controller implements NewLibraryPage {
 
-    private final String PAGE_TITLE = "Create a New Item Type";
     private final String ITEM_TYPE_NAME_ID = "item_type_name";
     private final SessionAuthController sessionAuthController;
     private final ItemTypesController itemTypesController;
 
     @Inject
-    NewItemTypePageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
+    NewLibraryPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
         this.sessionAuthController = sessionAuthController;
         this.itemTypesController = itemTypesController;
     }
@@ -38,7 +37,7 @@ class NewItemTypePageImpl extends Controller implements NewItemTypePage {
             ItemType itemType = itemTypesController.createItemType(name, username);
             Integer id = itemType.getId();
 
-            return redirect(pages.items.types.routes.EditItemTypePage.get(id));
+            return redirect(pages.items.types.routes.EditLibraryPage.get(id));
 
         } catch (UnauthorizedException e) {
             return redirect(routes.LoginPage.get());
