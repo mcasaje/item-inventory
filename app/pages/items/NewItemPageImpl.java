@@ -10,7 +10,6 @@ import models.items.Item;
 import models.items.fields.Field;
 import models.items.tags.Tag;
 import models.items.types.ItemType;
-import models.items.utils.sorting.items.ItemSortStrategy;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -19,7 +18,6 @@ import play.twirl.api.Content;
 import views.html.pages.items.newItem;
 
 import javax.inject.Inject;
-import java.util.List;
 
 class NewItemPageImpl extends Controller implements NewItemPage {
 

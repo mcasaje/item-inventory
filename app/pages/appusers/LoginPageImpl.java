@@ -7,6 +7,7 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.twirl.api.Content;
 import views.html.pages.appusers.login;
 
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ class LoginPageImpl extends Controller implements LoginPage {
     @Override
     public Result get() {
         final String pageTitle = "Login";
-        return ok(login.render(pageTitle, null, USERNAME_ID, "", PASSWORD_ID));
+        return ok((Content) login.render(pageTitle, null, USERNAME_ID, "", PASSWORD_ID));
     }
 
     @Override
@@ -47,13 +48,13 @@ class LoginPageImpl extends Controller implements LoginPage {
             return redirect(pages.items.libraries.routes.LibrariesPage.get());
 
         } catch (UsernameRequiredException e) {
-            return ok(login.render(pageTitle, "Username is required!", USERNAME_ID, username, PASSWORD_ID));
+            return ok((Content) login.render(pageTitle, "Username is required!", USERNAME_ID, username, PASSWORD_ID));
         } catch (PasswordRequiredException e) {
-            return ok(login.render(pageTitle, "Password is required!", USERNAME_ID, username, PASSWORD_ID));
+            return ok((Content) login.render(pageTitle, "Password is required!", USERNAME_ID, username, PASSWORD_ID));
         } catch (UserDoesNotExistException e) {
-            return ok(login.render(pageTitle, "User " + username + " does not exist!", USERNAME_ID, username, PASSWORD_ID));
+            return ok((Content) login.render(pageTitle, "User " + username + " does not exist!", USERNAME_ID, username, PASSWORD_ID));
         } catch (InvalidPasswordException e) {
-            return ok(login.render(pageTitle, "Invalid password!", USERNAME_ID, username, PASSWORD_ID));
+            return ok((Content) login.render(pageTitle, "Invalid password!", USERNAME_ID, username, PASSWORD_ID));
         }
 
     }

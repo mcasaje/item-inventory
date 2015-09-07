@@ -1,6 +1,7 @@
 package controllers.items;
 
 import models.items.Item;
+import models.items.utils.sorting.items.ItemFieldSortStrategy;
 import models.items.utils.sorting.items.ItemSortStrategy;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface ItemsController {
     List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy);
 
     List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy, int tagId);
+
+    List<Item> sortItemByField(List<Item> items, int fieldId, ItemFieldSortStrategy sortStrategy);
 
     void deleteItem(int itemId, String username);
 

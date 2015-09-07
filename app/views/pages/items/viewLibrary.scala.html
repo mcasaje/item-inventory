@@ -1,4 +1,4 @@
-@(title: String, showDetails: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], detailsKey: String, tagFilterKey: String, tagFilterVal: Integer)
+@(title: String, detailsVal: Boolean, tagFilterVal: Integer, fieldSortVal: Integer, fieldSortAsc: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], detailsKey: String, tagFilterKey: String, fieldSortKey: String, fieldSortDirKey: String, fieldNameKey: String)
 
 
 @main(true, title) {
@@ -11,18 +11,22 @@
 
     <form class="button" action="" method="GET">
 
-    @if(showDetails) {
-        <input type="hidden" name="@detailsKey" value="false"/>
-        @if(tagFilterVal != null) {
-            <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
-        }
-        <input type="submit" value="Hide Details">
-    } else {
-        <input type="hidden" name="@detailsKey" value="true"/>
-        @if(tagFilterVal != null) {
-            <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
-        }
-        <input type="submit" value="Show Details">
+        <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
+        <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
+
+        @if(detailsVal) {
+            <input type="hidden" name="@detailsKey" value="false"/>
+            @if(tagFilterVal != null) {
+                <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
+            }
+            <input type="submit" value="Hide Details">
+        } else {
+
+            <input type="hidden" name="@detailsKey" value="true"/>
+            @if(tagFilterVal != null) {
+                <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
+            }
+            <input type="submit" value="Show Details">
         }
 
     </form>
@@ -34,14 +38,16 @@
 
     <form class="button" action="" method="GET">
 
-        @if(showDetails) {
+        <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
+        <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
+
+        @if(detailsVal) {
             <input type="hidden" name="@detailsKey" value="true"/>
         } else {
             <input type="hidden" name="@detailsKey" value="false"/>
         }
 
-        <input type="hidden" name="@tagFilterKey" value="false"/>
-        <input type="submit" value="[Reset]"/>
+        <input type="submit" value="*Reset*"/>
 
     </form>
 
@@ -49,14 +55,17 @@
 
         <form class="button" action="" method="GET">
 
-            @if(showDetails) {
+            <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
+            <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
+
+            @if(detailsVal) {
                 <input type="hidden" name="@detailsKey" value="true"/>
             } else {
                 <input type="hidden" name="@detailsKey" value="false"/>
             }
 
-        <input type="hidden" name="@tagFilterKey" value="@tag.getId"/>
-        <input type="submit" value="@tag.getName"/>
+            <input type="hidden" name="@tagFilterKey" value="@tag.getId"/>
+            <input type="submit" value="@tag.getName"/>
 
         </form>
 
@@ -64,14 +73,63 @@
 
     <hr />
 
-    @if(showDetails) {
+    @if(detailsVal) {
 
         <table border="0">
 
             <tr id="table_header">
-                <td><b>Name</b></td>
+                <td>
+                    <form class="button" action="" method="GET">
+                        <input type="hidden" name="@fieldSortKey" value="-1"/>
+
+                        @if(fieldSortVal == -1 && fieldSortAsc) {
+                            <input type="hidden" name="@fieldSortDirKey" value="false"/>
+                        } else {
+                            <input type="hidden" name="@fieldSortDirKey" value="true"/>
+                        }
+
+                        @if(detailsVal) {
+                            <input type="hidden" name="@detailsKey" value="@detailsVal"/>
+                        }
+                        @if(tagFilterVal != null) {
+                            <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
+                        }
+
+                        @if(fieldSortVal == -1) {
+                            <input type="submit" value="[Name]"/>
+                        } else {
+                            <input type="submit" value="Name"/>
+                        }
+
+                    </form>
+                </td>
+
                 @for(field <- itemType.getFields) {
-                    <td><a href="">@field.getName</a></td>
+                    <td>
+                        <form class="button" action="" method="GET">
+                            <input type="hidden" name="@fieldSortKey" value="@field.getId"/>
+
+                            @if(fieldSortVal == field.getId && fieldSortAsc) {
+                                <input type="hidden" name="@fieldSortDirKey" value="false"/>
+                            } else {
+                                <input type="hidden" name="@fieldSortDirKey" value="true"/>
+                            }
+
+                            @if(detailsVal != null) {
+                                <input type="hidden" name="@detailsKey" value="@detailsVal"/>
+                            }
+                            @if(tagFilterVal != null) {
+                                <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
+                            }
+
+                            @if(fieldSortVal == field.getId) {
+                                <input type="submit" value="[@field.getName]"/>
+                            } else {
+                                <input type="submit" value="@field.getName"/>
+                            }
+
+                        </form>
+                    </td>
                 }
                 <td><b>Tags</b></td>
             </tr>

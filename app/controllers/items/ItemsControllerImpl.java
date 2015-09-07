@@ -3,6 +3,7 @@ package controllers.items;
 import models.items.Item;
 import models.items.ItemRepository;
 import models.items.tags.Tag;
+import models.items.utils.sorting.items.ItemFieldSortStrategy;
 import models.items.utils.sorting.items.ItemSortStrategy;
 import models.items.utils.sorting.items.ItemSorter;
 import models.jpa.JPAUtils;
@@ -100,6 +101,12 @@ class ItemsControllerImpl implements ItemsController {
 
         return filteredItems;
 
+    }
+
+    @Override
+    public List<Item> sortItemByField(List<Item> items, int fieldId, ItemFieldSortStrategy sortStrategy) {
+        itemSorter.sortItemsByItemFields(items, fieldId, sortStrategy);
+        return items;
     }
 
     @Override

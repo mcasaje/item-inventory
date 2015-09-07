@@ -6,6 +6,6 @@ public class ItemSorterModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ItemSorter.class).to(ItemIdSorterImpl.class);
+        bind(ItemSorter.class).to(ItemSorterImpl.class);
     }
 }

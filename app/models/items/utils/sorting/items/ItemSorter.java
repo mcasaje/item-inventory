@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ItemSorter {
 
-    void sortItems(List<Item> items, ItemSortStrategy itemSortStrategy);
+    void sortItems(List<Item> items, ItemSortStrategy sortStrategy);
+
+    void sortItemsByItemFields(List<Item> items, int fieldId, ItemFieldSortStrategy sortStrategy);
 
 }
