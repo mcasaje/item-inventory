@@ -16,7 +16,7 @@ POST        /users/new                                            @pages.appuser
 
 GET         /users/login                                          @pages.appusers.LoginPage.get()
 POST        /users/login                                          @pages.appusers.LoginPage.post()
-#GET        /users/logout
+GET        /users/logout        @pages.appusers.LogoutPage.post()
 
 #GET         /dashboard                              @pages.appusers.DashboardPage.get()
 

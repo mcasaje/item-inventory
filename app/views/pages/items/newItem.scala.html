@@ -1,7 +1,7 @@
 @(title: String, message: String, itemType: models.items.types.ItemType, itemNameId: String, tagId: String)
 
 
-@main(title) {
+@main(true, title) {
 
     <h1>@title <a href="/libraries/@itemType.getId">@itemType.getName</a></h1>
 

@@ -3,7 +3,7 @@
 @(title: String, item: Item, itemType: ItemType)
 
 
-@main(title) {
+@main(true, title) {
 
     <h1>@item.getName (<a href="/libraries/@itemType.getId">@itemType.getName</a>)</h1>
 

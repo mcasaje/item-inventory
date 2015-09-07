@@ -1,7 +1,7 @@
 @import models.items.types.ItemType
 @(title: String, message: String, itemType: ItemType, newFieldRoute: String, fieldNameId: String, newTagRoute: String, tagNameId: String)
 
-@main(title) {
+@main(true, title) {
 
     <h1>@title '@itemType.getName'</h1>
 
