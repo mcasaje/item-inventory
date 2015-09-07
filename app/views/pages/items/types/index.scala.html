@@ -1,4 +1,5 @@
-@(title: String, message: String, itemTypeNameId: String)
+@import models.items.types.ItemType
+@(title: String, message: String, itemTypes: List[ItemType], itemTypeNameId: String)
 
 @main(title) {
 
@@ -12,5 +13,13 @@
     <form action="" method="POST">
         <input id="name" name="@itemTypeNameId" type="text" /> <input type="submit" value="Create Item Type"/>
     </form>
+
+    <h3>Item Types</h3>
+
+    <ul>
+    @for(itemType <- itemTypes) {
+        <li>@itemType.getName</li>
+    }
+    </ul>
 
 }

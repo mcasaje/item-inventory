@@ -29,10 +29,10 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     }
 
     @Override
-    public Result get(String username) {
+    public Result get() {
 
         try {
-            sessionAuthController.getUserId(session());
+            String username = sessionAuthController.getUsername(session());
 
             List<Item> items = itemsController.getItems(username, ItemSortStrategy.ID_DESC);
             return ok((Content) index.render(username + "'s " + PAGE_TITLE, null, items, ITEM_NAME_ID));
@@ -44,16 +44,16 @@ class ItemsPageImpl extends Controller implements ItemsPage {
     }
 
     @Override
-    public Result post(String username) {
+    public Result post() {
 
         try {
-            sessionAuthController.getUserId(session());
+            String username = sessionAuthController.getUsername(session());
 
             DynamicForm form = Form.form().bindFromRequest();
             String itemName = form.get(ITEM_NAME_ID);
 
 
-            return redirect(pages.items.routes.ItemsPage.get(username));
+            return redirect(pages.items.routes.ItemsPage.get());
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

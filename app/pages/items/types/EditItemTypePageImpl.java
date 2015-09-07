@@ -8,6 +8,7 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.twirl.api.Content;
 import views.html.pages.items.types.editItemType;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ class EditItemTypePageImpl extends Controller implements EditItemTypePage {
 
                 ItemType itemType = itemTypesController.getItemType(itemTypeId);
                 String pageTitle = "Customize Item Type";
-                return ok(editItemType.render(pageTitle, null, itemType, NEW_FIELD_ROUTE, FIELD_NAME_ID, NEW_TAG_ROUTE, TAG_NAME_ID));
+                return ok((Content) editItemType.render(pageTitle, null, itemType, NEW_FIELD_ROUTE, FIELD_NAME_ID, NEW_TAG_ROUTE, TAG_NAME_ID));
 
             } else {
                 return notFound();

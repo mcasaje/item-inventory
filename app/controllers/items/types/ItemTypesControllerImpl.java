@@ -10,6 +10,7 @@ import models.jpa.JPAUtils;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.List;
 
 class ItemTypesControllerImpl implements ItemTypesController {
 
@@ -76,6 +77,24 @@ class ItemTypesControllerImpl implements ItemTypesController {
             entityManager.getTransaction().commit();
 
             return itemType;
+
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public List<ItemType> getItemTypes(String username) {
+
+        EntityManager entityManager = jpaUtils.createEntityManager();
+
+        try {
+
+            entityManager.getTransaction().begin();
+            List<ItemType> itemTypes = itemTypeRepository.findItemTypes(entityManager, username);
+            entityManager.getTransaction().commit();
+
+            return itemTypes;
 
         } finally {
             entityManager.close();

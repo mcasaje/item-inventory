@@ -6,6 +6,4 @@ public interface ItemTypesPage {
 
     Result get();
 
-    Result post();
-
 }
