@@ -42,6 +42,24 @@ class ItemsControllerImpl implements ItemsController {
     }
 
     @Override
+    public Item getItem(int itemId, String username) {
+
+        EntityManager entityManager = jpaUtils.createEntityManager();
+
+        try {
+
+            entityManager.getTransaction().begin();
+            Item item = itemRepository.findItem(entityManager, itemId, username);
+            entityManager.getTransaction().commit();
+
+            return item;
+
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
     public List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy) {
 
         EntityManager entityManager = jpaUtils.createEntityManager();

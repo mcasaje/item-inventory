@@ -11,6 +11,7 @@ import com.google.inject.AbstractModule;
 public class ItemsPageModule extends AbstractModule {
     protected void configure() {
         bind(ViewLibraryPage.class).to(ViewLibraryPageImpl.class).asEagerSingleton();
+        bind(ViewItemPage.class).to(ViewItemPageImpl.class).asEagerSingleton();
         bind(NewItemPage.class).to(NewItemPageImpl.class).asEagerSingleton();
         bind(EditItemPage.class).to(EditItemPageImpl.class).asEagerSingleton();
     }

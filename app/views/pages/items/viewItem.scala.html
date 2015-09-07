@@ -1,0 +1,34 @@
+@import models.items.Item
+@import models.items.types.ItemType
+@(title: String, item: Item, itemType: ItemType)
+
+
+@main(title) {
+
+    <h1>@item.getName</h1>
+
+    @for(field <- itemType.getFields) {
+
+        @defining(item.getItemField(field.getId)) { itemField =>
+
+            @if(itemField != null) {
+                <div>@field.getName : @itemField.getValue</div>
+            } else {
+                <div>@field.getName : </div>
+            }
+
+
+        }
+    }
+
+    @if(item.hasTags) {
+
+        <br/>
+
+        @for(tag <- item.getTags) {
+            [@tag.getName]
+        }
+
+    }
+
+}

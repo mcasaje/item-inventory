@@ -31,16 +31,18 @@ class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item findItem(EntityManager entityManager, int id) {
+    public Item findItem(EntityManager entityManager, int id, String usernameOfOwner) {
 
-        final String queryString = "SELECT o FROM ItemDAO o WHERE o.id=:ID";
+        final String queryString = "SELECT o FROM ItemDAO o WHERE o.id=:ID AND o.usernameOfOwner=:USERNAME_OF_OWNER";
         TypedQuery<ItemDAO> query = entityManager.createQuery(queryString, ItemDAO.class);
         query.setParameter("ID", id);
+        query.setParameter("USERNAME_OF_OWNER", usernameOfOwner);
         ItemDAO dao = query.getSingleResult();
-        id = dao.getId();
         String name = dao.getName();
         int itemTypeId = dao.getItemTypeId();
-        String usernameOfOwner = dao.getUsernameOfOwner();
+
+        assert id == dao.getId();
+        assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
         List<Tag> tags = tagRepository.findTags(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);

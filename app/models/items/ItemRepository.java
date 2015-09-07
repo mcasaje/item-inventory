@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ItemRepository {
 
-    Item findItem(EntityManager entityManager, int id);
+    Item findItem(EntityManager entityManager, int id, String usernameOfOwner);
 
     Item findItem(EntityManager entityManager, String name, String usernameOfOwner);
 

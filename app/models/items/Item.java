@@ -4,7 +4,6 @@ import models.items.itemfields.ItemField;
 import models.items.tags.Tag;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Immutable, represent a generic, customizable item.
@@ -25,6 +24,16 @@ public interface Item {
     List<Tag> getTags();
 
     List<ItemField> getItemFields();
+
+    Tag getTag(int tagId);
+
+    /**
+     * Retrieves the {@link ItemField} with the corresponding {@link models.items.fields.Field} id.
+     *
+     * @param fieldId The {@link models.items.fields.Field} id corresponding to {@link ItemField#getFieldId()}.
+     * @return
+     */
+    ItemField getItemField(int fieldId);
 
     int countTags();
 

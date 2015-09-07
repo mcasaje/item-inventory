@@ -12,6 +12,8 @@ public interface ItemsController {
 
     Item createItem(String name, int itemTypeId, String username);
 
+    Item getItem(int itemId, String username);
+
     List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy);
 
 }

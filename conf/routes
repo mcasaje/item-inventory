@@ -3,36 +3,37 @@
 # ~~~~
 
 # Home page - Play Test Page
-GET         /                                       @pages.Application.index()
+GET         /                                              @pages.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                           controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                  controllers.Assets.at(path="/public", file)
 
 
 # App Users
 
-GET         /users/new                              @pages.appusers.SignUpPage.get()
-POST        /users/new                              @pages.appusers.SignUpPage.post()
+GET         /users/new                                     @pages.appusers.SignUpPage.get()
+POST        /users/new                                     @pages.appusers.SignUpPage.post()
 
-GET         /users/login                            @pages.appusers.LoginPage.get()
-POST        /users/login                            @pages.appusers.LoginPage.post()
+GET         /users/login                                   @pages.appusers.LoginPage.get()
+POST        /users/login                                   @pages.appusers.LoginPage.post()
 #GET        /users/logout
 
 #GET         /dashboard                              @pages.appusers.DashboardPage.get()
 
 # Item Types
 
-GET         /libraries                                @pages.items.types.LibrariesPage.get()
-POST        /libraries                                @pages.items.types.NewLibraryPage.post()
+GET         /libraries                                     @pages.items.types.LibrariesPage.get()
+POST        /libraries                                     @pages.items.types.NewLibraryPage.post()
 
-GET         /libraries/:item_type_id/edit             @pages.items.types.EditLibraryPage.get(item_type_id:Integer)
-POST        /libraries/:item_type_id/fields           @pages.items.types.EditLibraryPage.postField(item_type_id:Integer)
-POST        /libraries/:item_type_id/tags             @pages.items.types.EditLibraryPage.postTag(item_type_id:Integer)
+GET         /libraries/:item_type_id/edit                  @pages.items.types.EditLibraryPage.get(item_type_id:Integer)
+POST        /libraries/:item_type_id/fields                @pages.items.types.EditLibraryPage.postField(item_type_id:Integer)
+POST        /libraries/:item_type_id/tags                  @pages.items.types.EditLibraryPage.postTag(item_type_id:Integer)
 
 
 # Items
 
-GET         /libraries/:item_type_id/items            @pages.items.ViewLibraryPage.get(item_type_id:Integer)
+GET         /libraries/:item_type_id/items/new             @pages.items.NewItemPage.get(item_type_id:Integer)
+POST        /libraries/:item_type_id/items/new             @pages.items.NewItemPage.post(item_type_id:Integer)
 
-GET         /libraries/:item_type_id/items/new        @pages.items.NewItemPage.get(item_type_id:Integer)
-POST        /libraries/:item_type_id/items/new        @pages.items.NewItemPage.post(item_type_id:Integer)
+GET         /libraries/:item_type_id/items                 @pages.items.ViewLibraryPage.get(item_type_id:Integer)
+GET         /libraries/:item_type_id/items/:item_id        @pages.items.ViewItemPage.get(item_type_id:Integer, item_id:Integer)
