@@ -1,4 +1,4 @@
-package pages.items.types;
+package pages.items.libraries;
 
 import controllers.appusers.sessions.SessionAuthController;
 import controllers.appusers.sessions.UnauthorizedException;

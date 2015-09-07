@@ -1,8 +1,9 @@
 package models.items.tags;
 
+import models.items.Item;
+
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Set;
 
 public interface TagRepository {
 
@@ -19,5 +20,7 @@ public interface TagRepository {
     void insertItemTag(EntityManager entityManager, int itemId, int tagId, String usernameOfOwner);
 
     void deleteTag(EntityManager entityManager, Tag tag);
+
+    void detachAllTagsFromItem(EntityManager entityManager, Item item);
 
 }

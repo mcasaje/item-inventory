@@ -119,11 +119,16 @@ class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void deleteItem(EntityManager entityManager, Item item) {
+    public void deleteItem(EntityManager entityManager, int itemId, String usernameOfOwner) {
 
-        ItemDAO dao = this.createDAO(item);
+        Item item = this.findItem(entityManager, itemId, usernameOfOwner);
 
-        entityManager.merge(dao);
+        assert item.getId() == itemId;
+        assert item.getUsername().equals(usernameOfOwner);
+
+        itemFieldRepository.deleteItemField(entityManager, item);
+        tagRepository.detachAllTagsFromItem(entityManager, item);
+        ItemDAO dao = entityManager.find(ItemDAO.class, itemId);
         entityManager.remove(dao);
 
     }

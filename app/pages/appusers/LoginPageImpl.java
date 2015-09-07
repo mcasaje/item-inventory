@@ -44,7 +44,7 @@ class LoginPageImpl extends Controller implements LoginPage {
             session(SessionAuthController.USER_ID_SESS_KEY, appUser.getId().toString());
             session(SessionAuthController.USERNAME_SESS_KEY, appUser.getUsername());
 
-            return redirect(pages.items.types.routes.LibrariesPage.get());
+            return redirect(pages.items.libraries.routes.LibrariesPage.get());
 
         } catch (UsernameRequiredException e) {
             return ok(login.render(pageTitle, "Username is required!", USERNAME_ID, username, PASSWORD_ID));

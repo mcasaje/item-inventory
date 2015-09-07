@@ -14,5 +14,6 @@ public class ItemsPageModule extends AbstractModule {
         bind(ViewItemPage.class).to(ViewItemPageImpl.class).asEagerSingleton();
         bind(NewItemPage.class).to(NewItemPageImpl.class).asEagerSingleton();
         bind(EditItemPage.class).to(EditItemPageImpl.class).asEagerSingleton();
+        bind(DeleteItemPage.class).to(DeleteItemPageImpl.class).asEagerSingleton();
     }
 }

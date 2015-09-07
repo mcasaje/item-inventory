@@ -48,12 +48,11 @@ class NewItemPageImpl extends Controller implements NewItemPage {
             String username = sessionAuthController.getUsername(session());
 
             ItemType itemType = itemTypesController.getItemType(itemTypeId);
-            List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
 
             String itemTypeName = itemType.getName();
-            final String pageTitle = String.format("%s Library", itemTypeName);
+            final String pageTitle = "Create a ";
 
-            return ok((Content) newItem.render(pageTitle, null, itemType, items, ITEM_NAME_ID, TAG_ID));
+            return ok((Content) newItem.render(pageTitle, null, itemType, ITEM_NAME_ID, TAG_ID));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());
@@ -71,6 +70,13 @@ class NewItemPageImpl extends Controller implements NewItemPage {
 
             DynamicForm form = Form.form().bindFromRequest();
             String itemName = form.get(ITEM_NAME_ID);
+
+            if (itemName == null || itemName.length() <= 0) {
+                String itemTypeName = itemType.getName();
+                final String pageTitle = "Create a ";
+                final String message = String.format("%s Name is required!", itemTypeName);
+                return ok((Content) newItem.render(pageTitle, message, itemType, ITEM_NAME_ID, TAG_ID));
+            }
 
             Item item = itemsController.createItem(itemName, itemTypeId, username);
             int itemId = item.getId();
@@ -90,7 +96,9 @@ class NewItemPageImpl extends Controller implements NewItemPage {
                 int fieldId = field.getId();
                 String fieldValue = form.get("field" + fieldId);
 
-                fieldsController.addFieldToItem(itemId, fieldId, username, fieldValue);
+                if (fieldValue != null && !fieldValue.equals("")) {
+                    fieldsController.addFieldToItem(itemId, fieldId, username, fieldValue);
+                }
             }
 
             return redirect(routes.ViewLibraryPage.get(itemTypeId));

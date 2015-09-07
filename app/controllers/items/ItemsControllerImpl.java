@@ -78,4 +78,20 @@ class ItemsControllerImpl implements ItemsController {
             entityManager.close();
         }
     }
+
+    @Override
+    public void deleteItem(int itemId, String username) {
+
+        EntityManager entityManager = jpaUtils.createEntityManager();
+
+        try {
+
+            entityManager.getTransaction().begin();
+            itemRepository.deleteItem(entityManager, itemId, username);
+            entityManager.getTransaction().commit();
+
+        } finally {
+            entityManager.close();
+        }
+    }
 }

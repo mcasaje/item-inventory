@@ -1,7 +1,10 @@
 package models.items.itemfields;
 
+import models.items.Item;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,12 +78,12 @@ class ItemFieldRepositoryImpl implements ItemFieldRepository {
     }
 
     @Override
-    public void deleteItemField(EntityManager entityManager, ItemField itemField) {
+    public void deleteItemField(EntityManager entityManager, Item item) {
 
-        ItemFieldDAO dao = this.createItemFieldDAO(itemField);
-
-        entityManager.merge(dao);
-        entityManager.remove(dao);
+        final String queryString = "DELETE FROM ItemFieldDAO o WHERE o.itemId=:ITEM_ID";
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("ITEM_ID", item.getId());
+        query.executeUpdate();
 
     }
 

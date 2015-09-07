@@ -39,7 +39,7 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
             List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
 
             String itemTypeName = itemType.getName();
-            final String pageTitle = String.format("%s Library", itemTypeName);
+            final String pageTitle = String.format("'%s' Library", itemTypeName);
 
             return ok((Content) viewLibrary.render(pageTitle, null, itemType, items, ITEM_NAME_ID));
 

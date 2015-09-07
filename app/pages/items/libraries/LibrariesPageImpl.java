@@ -1,46 +1,43 @@
-package pages.items.types;
+package pages.items.libraries;
 
 import controllers.appusers.sessions.SessionAuthController;
 import controllers.appusers.sessions.UnauthorizedException;
 import controllers.items.types.ItemTypesController;
 import models.items.types.ItemType;
-import pages.appusers.routes;
-import play.data.DynamicForm;
-import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.twirl.api.Content;
 
 import javax.inject.Inject;
+import java.util.List;
 
-class NewLibraryPageImpl extends Controller implements NewLibraryPage {
+class LibrariesPageImpl extends Controller implements LibrariesPage {
 
     private final String ITEM_TYPE_NAME_ID = "item_type_name";
+
     private final SessionAuthController sessionAuthController;
     private final ItemTypesController itemTypesController;
 
     @Inject
-    NewLibraryPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
+    LibrariesPageImpl(SessionAuthController sessionAuthController, ItemTypesController itemTypesController) {
         this.sessionAuthController = sessionAuthController;
         this.itemTypesController = itemTypesController;
     }
 
     @Override
-    public Result post() {
+    public Result get() {
 
         try {
-
             String username = sessionAuthController.getUsername(session());
 
-            DynamicForm form = Form.form().bindFromRequest();
-            String name = form.get(ITEM_TYPE_NAME_ID);
+            List<ItemType> itemTypes = itemTypesController.getItemTypes(username);
 
-            ItemType itemType = itemTypesController.createItemType(name, username);
-            Integer id = itemType.getId();
+            final String pageTitle = "Your Libraries";
 
-            return redirect(pages.items.types.routes.EditLibraryPage.get(id));
+            return ok((Content) views.html.pages.items.libraries.viewLibraries.render(pageTitle, null, itemTypes, ITEM_TYPE_NAME_ID));
 
         } catch (UnauthorizedException e) {
-            return redirect(routes.LoginPage.get());
+            return redirect(pages.appusers.routes.LoginPage.get());
         }
 
     }

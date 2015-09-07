@@ -1,7 +1,10 @@
 package models.items.tags;
 
+import models.items.Item;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +131,16 @@ class TagRepositoryImpl implements TagRepository {
 
         entityManager.merge(dao);
         entityManager.remove(dao);
+    }
+
+    @Override
+    public void detachAllTagsFromItem(EntityManager entityManager, Item item) {
+
+        final String queryString = "DELETE FROM ItemTagDAO o WHERE o.itemId=:ITEM_ID";
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("ITEM_ID", item.getId());
+        query.executeUpdate();
+
     }
 
     /*

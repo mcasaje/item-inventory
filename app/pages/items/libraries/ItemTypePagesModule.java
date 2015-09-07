@@ -4,7 +4,7 @@
  * Date: 9/6/2015
  * Time: 4:13 PM
  */
-package pages.items.types;
+package pages.items.libraries;
 
 import com.google.inject.AbstractModule;
 

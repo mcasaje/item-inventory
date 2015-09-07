@@ -13,6 +13,6 @@ public interface ItemRepository {
 
     Item insertItem(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner);
 
-    void deleteItem(EntityManager entityManager, Item item);
+    void deleteItem(EntityManager entityManager, int itemId, String usernameOfOwner);
 
 }

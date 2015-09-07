@@ -1,18 +1,22 @@
-@(title: String, message: String, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], itemNameId: String, tagId: String)
+@(title: String, message: String, itemType: models.items.types.ItemType, itemNameId: String, tagId: String)
 
 
 @main(title) {
 
-    <h1>@title</h1>
+    <h1>@title <a href="/libraries/@itemType.getId">@itemType.getName</a></h1>
 
     @if(message != null) {
         <h2>@message</h2>
     }
 
+
     <br />
+    <br />
+
     <form action="" method="POST">
-        <label for="item_name">@itemType.getName Name</label>
+        <label for="item_name"><b>@itemType.getName Name</b></label>
         <input id="item_name" name="@itemNameId" type="text"/>
+        <br />
         @for(field <- itemType.getFields) {
             <br />
             <label for="@field.getName">@field.getName</label>
