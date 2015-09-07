@@ -18,6 +18,7 @@ import java.util.List;
 class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
 
     private final String ITEM_DETAILS_QUERY_KEY = "details";
+    private final String TAG_FILTER_QUERY_KEY = "tag";
     private SessionAuthController sessionAuthController;
     private ItemTypesController itemTypesController;
     private ItemsController itemsController;
@@ -35,16 +36,34 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
         try {
             String username = sessionAuthController.getUsername(session());
 
-            String[] detailsVal = request().queryString().get(ITEM_DETAILS_QUERY_KEY);
-            boolean showDetails = detailsVal != null && detailsVal.length > 0 && detailsVal[0].equals("true");
+            // Determine Details or List view
+            String[] detailsVals = request().queryString().get(ITEM_DETAILS_QUERY_KEY);
+            boolean showDetails = detailsVals != null && detailsVals.length > 0 && detailsVals[0].equals("true");
+
+            // Check if we're filtering on a specific tag
+            String[] tagVals = request().queryString().get(TAG_FILTER_QUERY_KEY);
+
+            Integer tagId;
+
+            try {
+                tagId = tagVals != null && tagVals.length > 0 ? new Integer(tagVals[0]) : null;
+            } catch (Exception e) {
+                tagId = null;
+            }
 
             ItemType itemType = itemTypesController.getItemType(itemTypeId);
-            List<Item> items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
+            List<Item> items;
+
+            if (tagId != null) {
+                items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC, tagId);
+            } else {
+                items = itemsController.getItems(itemTypeId, username, ItemSortStrategy.ID_DESC);
+            }
 
             String itemTypeName = itemType.getName();
             final String pageTitle = String.format("'%s' Library", itemTypeName);
 
-            return ok((Content) viewLibrary.render(pageTitle, showDetails, itemType, items));
+            return ok((Content) viewLibrary.render(pageTitle, showDetails, itemType, items, ITEM_DETAILS_QUERY_KEY, TAG_FILTER_QUERY_KEY, tagId));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

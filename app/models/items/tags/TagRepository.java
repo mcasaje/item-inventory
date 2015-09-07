@@ -13,7 +13,9 @@ public interface TagRepository {
 
     List<Tag> findTags(EntityManager entityManager, String usernameOfOwner);
 
-    List<Tag> findTags(EntityManager entityManager, int itemTypeId);
+    List<Tag> findTagsForItemType(EntityManager entityManager, int itemTypeId);
+
+    List<Tag> findTagsForItem(EntityManager entityManager, int itemId);
 
     Tag insertTag(EntityManager entityManager, String name, int itemTypeId, String usernameOfOwner);
 

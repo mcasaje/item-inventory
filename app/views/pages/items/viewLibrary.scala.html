@@ -1,43 +1,86 @@
-@(title: String, showDetails: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item])
+@(title: String, showDetails: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], detailsKey: String, tagFilterKey: String, tagFilterVal: Integer)
 
 
 @main(true, title) {
 
     <h1>@title</h1>
 
-    <a href="/libraries/@itemType.getId/items/new">Add a @itemType.getName</a>
+    <form class="button" action="/libraries/@itemType.getId/items/new" method="GET">
+        <input type="submit" value="Add a @itemType.getName"/>
+    </form>
 
-    @if(items.size() > 0) {
+    <form class="button" action="" method="GET">
 
-        <br />
-        <br />
-        @if(showDetails) {
-            <a href="?details=false">Hide Details</a>
-        } else {
-            <a href="?details=true">Show Details</a>
+    @if(showDetails) {
+        <input type="hidden" name="@detailsKey" value="false"/>
+        @if(tagFilterVal != null) {
+            <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
         }
+        <input type="submit" value="Hide Details">
+    } else {
+        <input type="hidden" name="@detailsKey" value="true"/>
+        @if(tagFilterVal != null) {
+            <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
+        }
+        <input type="submit" value="Show Details">
+        }
+
+    </form>
+
+    <br />
+    <br/>
+
+    Tags:
+
+    <form class="button" action="" method="GET">
+
+        @if(showDetails) {
+            <input type="hidden" name="@detailsKey" value="true"/>
+        } else {
+            <input type="hidden" name="@detailsKey" value="false"/>
+        }
+
+        <input type="hidden" name="@tagFilterKey" value="false"/>
+        <input type="submit" value="[Reset]"/>
+
+    </form>
+
+    @for(tag <- itemType.getTags) {
+
+        <form class="button" action="" method="GET">
+
+            @if(showDetails) {
+                <input type="hidden" name="@detailsKey" value="true"/>
+            } else {
+                <input type="hidden" name="@detailsKey" value="false"/>
+            }
+
+        <input type="hidden" name="@tagFilterKey" value="@tag.getId"/>
+        <input type="submit" value="@tag.getName"/>
+
+        </form>
 
     }
 
+    <hr />
+
     @if(showDetails) {
 
-        <br/>
-        <br/>
-
-        <table border="1">
+        <table border="0">
 
             <tr id="table_header">
                 <td><b>Name</b></td>
                 @for(field <- itemType.getFields) {
-                    <td><b>@field.getName</b></td>
+                    <td><a href="">@field.getName</a></td>
                 }
+                <td><b>Tags</b></td>
             </tr>
 
             @for(item <- items) {
 
                 <tr>
 
-                    <td>@item.getName</td>
+                    <td><a href="@itemType.getId/items/@item.getId">@item.getName</a></td>
 
                     @for(field <- itemType.getFields) {
 
@@ -50,6 +93,12 @@
                         </td>
 
                     }
+
+                    <td>
+                    @for(tag <- item.getTags) {
+                        {@tag.getName}
+                    }
+                    </td>
 
                 </tr>
 

@@ -75,7 +75,7 @@ class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> findTags(EntityManager entityManager, int itemTypeId) {
+    public List<Tag> findTagsForItemType(EntityManager entityManager, int itemTypeId) {
 
         final String queryString = "SELECT o FROM TagDAO o WHERE o.itemTypeId=:ITEM_TYPE_ID ORDER BY o.name ASC";
         TypedQuery<TagDAO> query = entityManager.createQuery(queryString, TagDAO.class);
@@ -89,6 +89,30 @@ class TagRepositoryImpl implements TagRepository {
             String name = dao.getName();
             String usernameOfOwner = dao.getUsernameOfOwner();
             Tag tag = tagFactory.createTag(id, name, usernameOfOwner);
+            tags.add(tag);
+        }
+
+        return tags;
+
+    }
+
+    @Override
+    public List<Tag> findTagsForItem(EntityManager entityManager, int itemId) {
+
+        final String queryString = "SELECT o FROM ItemTagDAO o WHERE o.itemId=:ITEM_ID ORDER BY o.tagId ASC";
+        TypedQuery<ItemTagDAO> query = entityManager.createQuery(queryString, ItemTagDAO.class);
+        query.setParameter("ITEM_ID", itemId);
+        List<ItemTagDAO> daoList = query.getResultList();
+
+        ArrayList<Tag> tags = new ArrayList<>();
+
+        for (ItemTagDAO dao : daoList) {
+            int tagId = dao.getTagId();
+
+            assert itemId == dao.getItemId();
+
+            Tag tag = this.findTag(entityManager, tagId);
+
             tags.add(tag);
         }
 

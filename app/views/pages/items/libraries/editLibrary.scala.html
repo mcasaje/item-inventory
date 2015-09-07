@@ -3,7 +3,7 @@
 
 @main(true, title) {
 
-    <h1>@title '@itemType.getName'</h1>
+    <h1>@title '<a href="/libraries/@itemType.getId">@itemType.getName</a>'</h1>
 
     @if(message != null) {
         <h2>@message</h2>

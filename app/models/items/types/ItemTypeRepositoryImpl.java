@@ -38,7 +38,7 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
         String usernameOfOwner = itemTypeDAO.getUsernameOfOwner();
 
         List<Field> fields = fieldRepository.findFields(entityManager, id);
-        List<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTagsForItemType(entityManager, id);
 
         return itemTypeFactory.createItemType(id, name, usernameOfOwner, tags, fields);
     }
@@ -62,7 +62,7 @@ class ItemTypeRepositoryImpl implements ItemTypeRepository {
             assert username.equals(dao.getUsernameOfOwner());
 
             List<Field> fields = fieldRepository.findFields(entityManager, id);
-            List<Tag> tags = tagRepository.findTags(entityManager, id);
+            List<Tag> tags = tagRepository.findTagsForItemType(entityManager, id);
 
             ItemType itemType = itemTypeFactory.createItemType(id, name, username, tags, fields);
             itemTypes.add(itemType);

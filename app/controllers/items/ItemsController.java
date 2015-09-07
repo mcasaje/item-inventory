@@ -16,6 +16,8 @@ public interface ItemsController {
 
     List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy);
 
+    List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy, int tagId);
+
     void deleteItem(int itemId, String username);
 
 }

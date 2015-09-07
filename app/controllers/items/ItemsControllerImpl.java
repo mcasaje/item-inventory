@@ -2,12 +2,14 @@ package controllers.items;
 
 import models.items.Item;
 import models.items.ItemRepository;
+import models.items.tags.Tag;
 import models.items.utils.sorting.items.ItemSortStrategy;
 import models.items.utils.sorting.items.ItemSorter;
 import models.jpa.JPAUtils;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 class ItemsControllerImpl implements ItemsController {
@@ -77,6 +79,27 @@ class ItemsControllerImpl implements ItemsController {
         } finally {
             entityManager.close();
         }
+    }
+
+    @Override
+    public List<Item> getItems(int itemTypeId, String username, ItemSortStrategy sortStrategy, int tagId) {
+
+        List<Item> items = this.getItems(itemTypeId, username, sortStrategy);
+
+        ArrayList<Item> filteredItems = new ArrayList<>();
+
+        for (Item i : items) {
+
+            Tag tag = i.getTag(tagId);
+
+            if (tag != null) {
+                filteredItems.add(i);
+            }
+
+        }
+
+        return filteredItems;
+
     }
 
     @Override

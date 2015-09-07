@@ -44,7 +44,7 @@ class ItemRepositoryImpl implements ItemRepository {
         assert id == dao.getId();
         assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
-        List<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTagsForItemType(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
         return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
@@ -65,7 +65,7 @@ class ItemRepositoryImpl implements ItemRepository {
 
         assert usernameOfOwner.equals(dao.getUsernameOfOwner());
 
-        List<Tag> tags = tagRepository.findTags(entityManager, id);
+        List<Tag> tags = tagRepository.findTagsForItemType(entityManager, id);
         List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
 
         return itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
@@ -90,7 +90,7 @@ class ItemRepositoryImpl implements ItemRepository {
             assert usernameOfOwner.equals(dao.getUsernameOfOwner());
             assert itemTypeId == dao.getItemTypeId();
 
-            List<Tag> tags = tagRepository.findTags(entityManager, id);
+            List<Tag> tags = tagRepository.findTagsForItem(entityManager, id);
             List<ItemField> itemFields = itemFieldRepository.findItemFields(entityManager, id);
             Item item = itemFactory.createItem(id, name, itemTypeId, usernameOfOwner, tags, itemFields);
             items.add(item);
