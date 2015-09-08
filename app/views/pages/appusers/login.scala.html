@@ -3,10 +3,10 @@
 
     @main(false, title) {
 
-    <h1>@title</h1>
+    <h1 class="page_title">@title</h1>
 
     @if(message != null) {
-        <h2>@message</h2>
+        <h2 class="alert_message">@message</h2>
     }
 
     <br />
@@ -14,11 +14,15 @@
         <label for="username">Username</label>
         <input name="@usernameId" type="text" value="@usernameVal"/>
         <br />
+        <br />
         <label for="password">Password</label>
         <input name="@passwordId" type="password" value=""/>
         <br />
         <br />
         <input type="submit" value="Login"/>
+        <br/>
+        <br/>
+        <a href="/users/new">Create an Account</a>
     </form>
 
 }

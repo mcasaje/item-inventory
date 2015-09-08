@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 class NewItemPageImpl extends Controller implements NewItemPage {
 
+    private final String PAGE_TITLE = "Create";
     private final String ITEM_NAME_ID = "new_item_name";
     private final String TAG_ID = "tags";
 
@@ -43,14 +44,11 @@ class NewItemPageImpl extends Controller implements NewItemPage {
     public Result get(int itemTypeId) {
 
         try {
-            String username = sessionAuthController.getUsername(session());
+            sessionAuthController.checkAuth(session());
 
             ItemType itemType = itemTypesController.getItemType(itemTypeId);
 
-            String itemTypeName = itemType.getName();
-            final String pageTitle = "Create a ";
-
-            return ok((Content) newItem.render(pageTitle, null, itemType, ITEM_NAME_ID, TAG_ID));
+            return ok((Content) newItem.render(PAGE_TITLE, null, itemType, ITEM_NAME_ID, TAG_ID));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());
@@ -71,9 +69,8 @@ class NewItemPageImpl extends Controller implements NewItemPage {
 
             if (itemName == null || itemName.length() <= 0) {
                 String itemTypeName = itemType.getName();
-                final String pageTitle = "Create a ";
                 final String message = String.format("%s Name is required!", itemTypeName);
-                return ok((Content) newItem.render(pageTitle, message, itemType, ITEM_NAME_ID, TAG_ID));
+                return ok((Content) newItem.render(PAGE_TITLE, message, itemType, ITEM_NAME_ID, TAG_ID));
             }
 
             Item item = itemsController.createItem(itemName, itemTypeId, username);

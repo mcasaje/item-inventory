@@ -11,11 +11,20 @@
     </head>
     <body>
         @if(auth) {
-            <div><a href="/libraries">Libraries</a> <a href="/users/logout">Log Out</a></div>
-
+            <div class="header">
+                <div class="app_title">Item Library</div>
+                <div class="nav_item"><a href="/users/logout">Log Out</a></div>
+                <div class="nav_item"><a href="/libraries">Libraries</a></div>
+            </div>
         } else {
-
+            <div class="header">
+                <div class="app_title">Item Library</div>
+                <div class="nav_item"><a href="/users/login">Login</a></div>
+                <div class="nav_item"><a href="/users/new">New Account</a></div>
+            </div>
         }
+        <div class="content">
         @content
+        </div>
     </body>
 </html>

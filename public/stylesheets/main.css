@@ -1,8 +1,112 @@
-td {
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+form {
+    margin: auto;
+    text-align: center;
+}
+
+form.large {
+    margin: auto;
     text-align: left;
-    padding: 0px 15px;
+}
+
+h1, h2, h3 {
+    font-family: sans-serif;
+}
+
+hr {
+    width: 65%;
+    margin: 30px auto;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 1200px;
+    margin: auto;
+    padding: auto;
+}
+
+td {
+    border: 1px solid #efefef;
+    text-align: center;
+    padding: 7px 5px;
+    font-family: sans-serif;
+    font-size: 8pt;
+}
+
+.alert_message {
+    text-align: center;
 }
 
 .button {
     display: inline;
+}
+
+.header {
+    height: 25px;
+    padding: 12px 25px;
+    background-color: #dcebfb;
+    font-size: 14pt;
+    font-family: sans-serif;
+    text-align: left;
+}
+
+.header .app_title {
+    font-size: 16pt;
+    font-weight: bolder;
+    display: inline;
+}
+
+.header .nav_item {
+    margin: 0px 10px;
+    float: right;
+}
+
+.container {
+    text-align: center;
+}
+
+.container form {
+    width: 500px;
+}
+
+.container .list {
+    text-align: center;
+}
+
+.content {
+    margin: auto;
+    padding: 30px 0px;
+    text-align: left;
+}
+
+.page_title {
+    font-family: sans-serif;
+    margin: auto;
+    text-align: center;
+}
+
+.list {
+    width: 400px;
+    margin: 25px auto 0px;
+    text-align: center;
+}
+
+.list ul {
+    margin: 0px 0px 0px 65px;
+    text-align: left;
+}
+
+.large_list {
+    width: 100%;
+}
+
+.inline_block {
+    margin: 0px 15px;
+    padding: 0px;
+    display: inline-block;
+    vertical-align: top;
 }

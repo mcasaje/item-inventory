@@ -5,20 +5,26 @@
 
 @main(true, title) {
 
-    <h1>@item.getName (<a href="/libraries/@itemType.getId">@itemType.getName</a>)</h1>
+    <h1 class="page_title">@item.getName (<a href="/libraries/@itemType.getId">@itemType.getName</a>)</h1>
 
-    @for(field <- itemType.getFields) {
+    <div class="container">
+        <div class="list">
 
-        @defining(item.getItemField(field.getId)) { itemField =>
+        @for(field <- itemType.getFields) {
 
-            @if(itemField != null) {
-                <div>@field.getName : @itemField.getValue</div>
-            } else {
-                <div>@field.getName : </div>
+            @defining(item.getItemField(field.getId)) { itemField =>
+
+                @if(itemField != null) {
+                    <div>@field.getName : @itemField.getValue</div>
+                } else {
+                    <div>@field.getName : </div>
+                }
+
             }
-
         }
-    }
+
+        </div>
+    </div>
 
     @if(item.hasTags) {
 

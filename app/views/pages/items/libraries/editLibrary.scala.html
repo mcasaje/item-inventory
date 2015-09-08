@@ -3,37 +3,55 @@
 
 @main(true, title) {
 
-    <h1>@title '<a href="/libraries/@itemType.getId">@itemType.getName</a>'</h1>
+    <h1 class="page_title">@title '<a href="/libraries/@itemType.getId">@itemType.getName</a>'</h1>
 
     @if(message != null) {
-        <h2>@message</h2>
+        <h2 class="alert_message">@message</h2>>
     }
 
     <br />
-    <form action="@newFieldRoute" method="POST">
-        <input id="name" name="@fieldNameId" type="text" />
-        <input type="submit" value="New Field"/>
-    </form>
     <br />
-    <form action="@newTagRoute" method="POST">
-        <input id="name" name="@tagNameId" type="text" />
-        <input type="submit" value="New Tag"/>
-    </form>
 
-    <h3>Fields</h3>
+    <div class="container">
 
-    <ul>
-    @for(field <- itemType.getFields) {
-        <li>@field.getName</li>
-    }
-    </ul>
+        <form class="inline_block" action="@newFieldRoute" method="POST">
+            <input id="name" name="@fieldNameId" type="text" />
+            <input type="submit" value="New Field"/>
+        </form>
+        <form class="inline_block" action="@newTagRoute" method="POST">
+            <input id="name" name="@tagNameId" type="text" />
+            <input type="submit" value="New Tag"/>
+        </form>
 
-    <h3>Tags</h3>
+    </div>
 
-    <ul>
-    @for(tag <- itemType.getTags) {
-        <li>@tag.getName</li>
-    }
-    </ul>
+    <hr />
+
+    <div class="container">
+
+        <div class="list inline_block">
+
+            <h3>Fields</h3>
+
+            <ul>
+            @for(field <- itemType.getFields) {
+                <li>@field.getName</li>
+            }
+            </ul>
+
+        </div>
+        <div class="list inline_block">
+
+            <h3>Tags</h3>
+
+            <ul>
+            @for(tag <- itemType.getTags) {
+                <li>@tag.getName</li>
+            }
+            </ul>
+
+        </div>
+
+    </div>
 
 }

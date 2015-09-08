@@ -23,7 +23,7 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
     private final String ITEM_DETAILS_QUERY_KEY = "details";
     private final String TAG_FILTER_QUERY_KEY = "tag";
     private final String FIELD_SORT_FORM_KEY = "field";
-    private final String FIELD_SORT_DIR_FORM_KEY = "field_asc";
+    private final String FIELD_SORT_DIR_FORM_KEY = "field_desc";
     private final String FIELD_NAME_KEY = "field_name";
     private SessionAuthController sessionAuthController;
     private ItemTypesController itemTypesController;
@@ -52,7 +52,7 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
             String fieldVal = form.get(FIELD_SORT_FORM_KEY);
             Integer fieldId = fieldVal != null ? new Integer(fieldVal) : -1;
             String fieldDirVal = form.get(FIELD_SORT_DIR_FORM_KEY);
-            boolean fieldSortAsc = new Boolean(fieldDirVal);
+            boolean fieldSortDesc = new Boolean(fieldDirVal);
 
             // Check if we're filtering on a specific tag
             String tagVal = form.get(TAG_FILTER_QUERY_KEY);
@@ -66,12 +66,14 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
             try {
                 tagId = tagVal != null ? new Integer(tagVal) : null;
 
-                ItemSortStrategy itemSortStrategy = ItemSortStrategy.NAME_ASC;
+                ItemSortStrategy itemSortStrategy;
 
-                if (fieldId == -1 && fieldSortAsc) {
+                if (fieldDirVal == null) {
                     itemSortStrategy = ItemSortStrategy.NAME_ASC;
-                } else if (fieldId == -1 && !fieldSortAsc) {
+                } else if (fieldId == -1 && fieldSortDesc) {
                     itemSortStrategy = ItemSortStrategy.NAME_DESC;
+                } else {
+                    itemSortStrategy = ItemSortStrategy.NAME_ASC;
                 }
 
                 if (tagId != null) {
@@ -80,7 +82,7 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
                     items = itemsController.getItems(itemTypeId, username, itemSortStrategy);
                 }
 
-                if (fieldId != -1 && fieldSortAsc) {
+                if (fieldId != -1 && fieldSortDesc) {
                     itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_ASC);
                 } else if (fieldId != -1) {
                     itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_DESC);
@@ -93,7 +95,7 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
             String itemTypeName = itemType.getName();
             final String pageTitle = String.format("'%s' Library", itemTypeName);
 
-            return ok((Content) viewLibrary.render(pageTitle, showDetails, tagId, fieldId, fieldSortAsc, itemType, items, ITEM_DETAILS_QUERY_KEY, TAG_FILTER_QUERY_KEY, FIELD_SORT_FORM_KEY, FIELD_SORT_DIR_FORM_KEY, FIELD_NAME_KEY));
+            return ok((Content) viewLibrary.render(pageTitle, showDetails, tagId, fieldId, fieldSortDesc, itemType, items, ITEM_DETAILS_QUERY_KEY, TAG_FILTER_QUERY_KEY, FIELD_SORT_FORM_KEY, FIELD_SORT_DIR_FORM_KEY, FIELD_NAME_KEY));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());

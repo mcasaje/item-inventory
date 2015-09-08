@@ -41,7 +41,7 @@ class EditLibraryPageImpl extends Controller implements EditLibraryPage {
             if (itemTypeExists) {
 
                 ItemType itemType = itemTypesController.getItemType(itemTypeId);
-                String pageTitle = "Customize Item Type";
+                String pageTitle = "Customize ";
                 return ok((Content) editLibrary.render(pageTitle, null, itemType, NEW_FIELD_ROUTE, FIELD_NAME_ID, NEW_TAG_ROUTE, TAG_NAME_ID));
 
             } else {

@@ -1,62 +1,34 @@
-@(title: String, detailsVal: Boolean, tagFilterVal: Integer, fieldSortVal: Integer, fieldSortAsc: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], detailsKey: String, tagFilterKey: String, fieldSortKey: String, fieldSortDirKey: String, fieldNameKey: String)
+@(title: String, detailsVal: Boolean, tagFilterVal: Integer, fieldSortVal: Integer, fieldSortDesc: Boolean, itemType: models.items.types.ItemType, items: java.util.List[models.items.Item], detailsKey: String, tagFilterKey: String, fieldSortKey: String, fieldSortDirKey: String, fieldNameKey: String)
 
 
 @main(true, title) {
 
-    <h1>@title</h1>
+    <h1 class="page_title">@title</h1>
 
-    <form class="button" action="/libraries/@itemType.getId/items/new" method="GET">
-        <input type="submit" value="Add a @itemType.getName"/>
-    </form>
-
-    <form class="button" action="" method="GET">
-
-        <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
-        <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
-
-        @if(detailsVal) {
-            <input type="hidden" name="@detailsKey" value="false"/>
-            @if(tagFilterVal != null) {
-                <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
-            }
-            <input type="submit" value="Hide Details">
-        } else {
-
-            <input type="hidden" name="@detailsKey" value="true"/>
-            @if(tagFilterVal != null) {
-                <input type="hidden" name="@tagFilterKey" value="@tagFilterVal"/>
-            }
-            <input type="submit" value="Show Details">
-        }
-
-    </form>
-
-    <br />
-    <br/>
-
-    Tags:
-
-    <form class="button" action="" method="GET">
-
-        <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
-        <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
-
-        @if(detailsVal) {
-            <input type="hidden" name="@detailsKey" value="true"/>
-        } else {
-            <input type="hidden" name="@detailsKey" value="false"/>
-        }
-
-        <input type="submit" value="*Reset*"/>
-
-    </form>
-
-    @for(tag <- itemType.getTags) {
+    <div class="list large_list">
+        <form class="button" action="/libraries/@itemType.getId/items/new" method="GET">
+            <input type="submit" value="Add a @itemType.getName"/>
+        </form>
 
         <form class="button" action="" method="GET">
 
             <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
-            <input type="hidden" name="@fieldSortDirKey" value="@fieldSortAsc"/>
+            <input type="hidden" name="@fieldSortDirKey" value="@fieldSortDesc"/>
+
+        </form>
+
+        <form class="button" action="/libraries/@itemType.getId/edit" method="GET">
+            <input type="submit" value="Edit Library"/>
+        </form>
+
+        <hr />
+
+        Tags:
+
+        <form class="button" action="" method="GET">
+
+            <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
+            <input type="hidden" name="@fieldSortDirKey" value="@fieldSortDesc"/>
 
             @if(detailsVal) {
                 <input type="hidden" name="@detailsKey" value="true"/>
@@ -64,16 +36,36 @@
                 <input type="hidden" name="@detailsKey" value="false"/>
             }
 
-            <input type="hidden" name="@tagFilterKey" value="@tag.getId"/>
-            <input type="submit" value="@tag.getName"/>
+            <input type="submit" value="*Reset*"/>
 
         </form>
 
-    }
+        @for(tag <- itemType.getTags) {
+
+            <form class="button" action="" method="GET">
+
+                <input type="hidden" name="@fieldSortKey" value="@fieldSortVal"/>
+                <input type="hidden" name="@fieldSortDirKey" value="@fieldSortDesc"/>
+
+                @if(detailsVal) {
+                    <input type="hidden" name="@detailsKey" value="true"/>
+                } else {
+                    <input type="hidden" name="@detailsKey" value="false"/>
+                }
+
+                <input type="hidden" name="@tagFilterKey" value="@tag.getId"/>
+                <input type="submit" value="@tag.getName"/>
+
+            </form>
+
+        }
+
+    </div>
 
     <hr />
 
-    @if(detailsVal) {
+
+    <div class="container">
 
         <table border="0">
 
@@ -82,7 +74,7 @@
                     <form class="button" action="" method="GET">
                         <input type="hidden" name="@fieldSortKey" value="-1"/>
 
-                        @if(fieldSortVal == -1 && fieldSortAsc) {
+                        @if(fieldSortVal == -1 && fieldSortDesc) {
                             <input type="hidden" name="@fieldSortDirKey" value="false"/>
                         } else {
                             <input type="hidden" name="@fieldSortDirKey" value="true"/>
@@ -109,7 +101,7 @@
                         <form class="button" action="" method="GET">
                             <input type="hidden" name="@fieldSortKey" value="@field.getId"/>
 
-                            @if(fieldSortVal == field.getId && fieldSortAsc) {
+                            @if(fieldSortVal == field.getId && fieldSortDesc) {
                                 <input type="hidden" name="@fieldSortDirKey" value="false"/>
                             } else {
                                 <input type="hidden" name="@fieldSortDirKey" value="true"/>
@@ -131,7 +123,6 @@
                         </form>
                     </td>
                 }
-                <td><b>Tags</b></td>
             </tr>
 
             @for(item <- items) {
@@ -152,27 +143,12 @@
 
                     }
 
-                    <td>
-                    @for(tag <- item.getTags) {
-                        {@tag.getName}
-                    }
-                    </td>
-
                 </tr>
 
             }
 
         </table>
 
-    } else {
-
-        <ul>
-        @for(item <- items) {
-            <li><a href="@itemType.getId/items/@item.getId">@item.getName</a></li>
-        }
-        </ul>
-
-    }
-
+    </div>
 
 }

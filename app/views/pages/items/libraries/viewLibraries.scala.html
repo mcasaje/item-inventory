@@ -4,10 +4,11 @@
 
 @main(true, title) {
 
-    <h1>@title</h1>
+    <h1 class="page_title">@title</h1>
 
     @if(message != null) {
-        <h2>@message</h2>
+        <h2 class="alert_message">@message</h2>
+
     }
 
     <br />
@@ -15,13 +16,17 @@
         <input id="name" name="@itemTypeNameId" type="text" /> <input type="submit" value="Create Library"/>
     </form>
 
-    <ul>
-    @for(itemType <- itemTypes) {
-        <li>
-            <a href="/libraries/@itemType.getId">@itemType.getName</a>
-            (<a href="/libraries/@itemType.getId/edit">Edit</a>)
-        </li>
-    }
-    </ul>
+    <hr/>
+
+    <div class="list">
+        <ul>
+        @for(itemType <- itemTypes) {
+            <li>
+                <a href="/libraries/@itemType.getId">@itemType.getName</a>
+                (<a href="/libraries/@itemType.getId/edit">Edit</a>)
+            </li>
+        }
+        </ul>
+    </div>
 
 }

@@ -3,34 +3,65 @@
 
 @main(true, title) {
 
-    <h1>@title <a href="/libraries/@itemType.getId">@itemType.getName</a></h1>
+    <h1 class="page_title">@title <a href="/libraries/@itemType.getId">@itemType.getName</a></h1>
 
     @if(message != null) {
-        <h2>@message</h2>
+        <h2 class="alert_message">@message</h2>
     }
 
+    <hr/>
 
-    <br />
-    <br />
+    <div class="container">
 
-    <form action="" method="POST">
-        <label for="item_name"><b>@itemType.getName Name</b></label>
-        <input id="item_name" name="@itemNameId" type="text"/>
-        <br />
-        @for(field <- itemType.getFields) {
-            <br />
-            <label for="@field.getName">@field.getName</label>
-            <input id="@field.getName" name="field@field.getId" type="text"/>
-        }
-        <br />
-        <br />
-        @for(tag <- itemType.getTags) {
-            <label for="@tag.getName">@tag.getName</label>
-            <input id="@tag.getName" type="checkbox" name="tag@tag.getId" value="true">
-        }
-        <br />
-        <br />
-        <input type="submit" value="Add @itemType.getName"/>
-    </form>
+
+        <form class="large" action="" method="POST">
+
+            <div class="container">
+
+                <div class="inline_block" style="text-align : left ; width : 175 px ;">
+                    <label for="item_name"><b>@itemType.getName Name</b></label>
+                </div>
+                <div class="inline_block" style="text-align : right ;">
+                    <input id="item_name" name="@itemNameId" type="text"/>
+                </div>
+                <br />
+
+                @for(field <- itemType.getFields) {
+                    <br />
+                    <div class="inline_block" style="text-align : left ; width : 175 px ;">
+                        <label for="@field.getName">@field.getName</label>
+                    </div>
+                    <div class="inline_block" style="text-align : right ;">
+                        <input id="@field.getName" name="field@field.getId" type="text"/>
+                    </div>
+                }
+                <br />
+                <br />
+                <h3 style="text-align : center">Tags</h3>
+
+            </div>
+
+            <div class="container">
+
+            @for(tag <- itemType.getTags) {
+                <div class="inline_block">
+                    <label for="@tag.getName">@tag.getName</label>
+                    <input id="@tag.getName" type="checkbox" name="tag@tag.getId" value="true">
+                </div>
+            }
+
+            </div>
+
+            <br/>
+            <br/>
+
+            <div class="container">
+                <input type="submit" value="Add @itemType.getName"/>
+            </div>
+
+        </form>
+
+
+    </div>
 
 }
