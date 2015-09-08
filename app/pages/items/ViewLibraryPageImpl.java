@@ -44,58 +44,49 @@ class ViewLibraryPageImpl extends Controller implements ViewLibraryPage {
 
             DynamicForm form = Form.form().bindFromRequest();
 
-            // Determine Details or List view
-            String detailsVal = form.get(ITEM_DETAILS_QUERY_KEY);
-            boolean showDetails = new Boolean(detailsVal);
+            ItemType itemType = itemTypesController.getItemType(itemTypeId);
 
             // Check what to sort on
             String fieldVal = form.get(FIELD_SORT_FORM_KEY);
             Integer fieldId = fieldVal != null ? new Integer(fieldVal) : -1;
+
+            // Check what direction to sort
             String fieldDirVal = form.get(FIELD_SORT_DIR_FORM_KEY);
             boolean fieldSortDesc = new Boolean(fieldDirVal);
 
             // Check if we're filtering on a specific tag
             String tagVal = form.get(TAG_FILTER_QUERY_KEY);
+            Integer tagId = tagVal != null ? new Integer(tagVal) : null;
 
-            Integer tagId;
+            ItemSortStrategy itemSortStrategy;
 
-            ItemType itemType = itemTypesController.getItemType(itemTypeId);
+            // Special Case: Default to sorting the item name
+            if (fieldId == -1 && fieldSortDesc) {
+                itemSortStrategy = ItemSortStrategy.NAME_DESC;
+            } else {
+                itemSortStrategy = ItemSortStrategy.NAME_ASC;
+            }
 
-            List<Item> items = null;
+            List<Item> items;
 
-            try {
-                tagId = tagVal != null ? new Integer(tagVal) : null;
+            // Get items, optionally filtering on tag.
+            if (tagVal != null) {
+                items = itemsController.getItems(itemTypeId, username, itemSortStrategy, tagId);
+            } else {
+                items = itemsController.getItems(itemTypeId, username, itemSortStrategy);
+            }
 
-                ItemSortStrategy itemSortStrategy;
-
-                if (fieldDirVal == null) {
-                    itemSortStrategy = ItemSortStrategy.NAME_ASC;
-                } else if (fieldId == -1 && fieldSortDesc) {
-                    itemSortStrategy = ItemSortStrategy.NAME_DESC;
-                } else {
-                    itemSortStrategy = ItemSortStrategy.NAME_ASC;
-                }
-
-                if (tagId != null) {
-                    items = itemsController.getItems(itemTypeId, username, itemSortStrategy, tagId);
-                } else {
-                    items = itemsController.getItems(itemTypeId, username, itemSortStrategy);
-                }
-
-                if (fieldId != -1 && fieldSortDesc) {
-                    itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_ASC);
-                } else if (fieldId != -1) {
-                    itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_DESC);
-                }
-
-            } catch (Exception e) {
-                tagId = -1;
+            // Optionally sorting items further by specified field id.
+            if (fieldId != -1 && fieldSortDesc) {
+                itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_ASC);
+            } else if (fieldId != -1) {
+                itemsController.sortItemByField(items, fieldId, ItemFieldSortStrategy.ITEM_FIELD_VALUE_DESC);
             }
 
             String itemTypeName = itemType.getName();
             final String pageTitle = String.format("'%s' Library", itemTypeName);
 
-            return ok((Content) viewLibrary.render(pageTitle, showDetails, tagId, fieldId, fieldSortDesc, itemType, items, ITEM_DETAILS_QUERY_KEY, TAG_FILTER_QUERY_KEY, FIELD_SORT_FORM_KEY, FIELD_SORT_DIR_FORM_KEY, FIELD_NAME_KEY));
+            return ok((Content) viewLibrary.render(pageTitle, true, tagId, fieldId, fieldSortDesc, itemType, items, ITEM_DETAILS_QUERY_KEY, TAG_FILTER_QUERY_KEY, FIELD_SORT_FORM_KEY, FIELD_SORT_DIR_FORM_KEY, FIELD_NAME_KEY));
 
         } catch (UnauthorizedException e) {
             return redirect(pages.appusers.routes.LoginPage.get());
